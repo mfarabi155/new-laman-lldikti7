@@ -1,0 +1,42 @@
+/* =========================================
+   PUBLIC/LAMAN/CSS/STYLE.CSS
+   ========================================= */
+
+/* Menyembunyikan elemen Alpine sebelum dimuat */
+[x-cloak] { 
+    display: none !important; 
+}
+
+/* Animasi Running Text */
+.marquee-content { 
+    display: inline-block; 
+    white-space: nowrap; 
+    animation: marquee 25s linear infinite; 
+}
+@keyframes marquee { 
+    0% { transform: translateX(100%); } 
+    100% { transform: translateX(-100%); } 
+}
+.marquee-container:hover .marquee-content { 
+    animation-play-state: paused; 
+}
+
+/* Tipografi Kustom */
+.wavy-text { 
+    fill: #0F172A; 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+}
+.text-gradient { 
+    background: linear-gradient(to right, #60A5FA, #EE4444); 
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+}
+
+/* Efek Tambahan */
+@keyframes zoom-slow { 
+    0%, 100% { transform: scale(1.05); } 
+    50% { transform: scale(1.15); } 
+}
+.shadow-soft { 
+    box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.05); 
+}
