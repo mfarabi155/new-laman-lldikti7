@@ -13,55 +13,57 @@ class AuthController extends Controller
     public function authenticate(Request $request)
     {
         $request->validate([
-            'username' => ['required'],
-            'password' => ['required'],
+            'username' => 'required',
+            'password' => 'required',
         ]);
 
-        // 1. Cari user berdasarkan username
-        $user = User::where('t_user_username', $request->username)->first();
+        $user = \App\Models\User::where('t_user_username', $request->username)->first();
 
-        // 2. Jika user ditemukan, kita cek kecocokan passwordnya
         if ($user) {
-            $inputPassword = $request->password;
-            $dbPassword = $user->t_user_password;
-            
-            $isPasswordValid = false;
-            $needsHashUpgrade = false;
-
-            // Cek Skenario A: Apakah passwordnya sudah Bcrypt? (User baru / User lama yang sudah ter-upgrade)
-            if (Hash::check($inputPassword, $dbPassword)) {
-                $isPasswordValid = true;
-            } 
-            // Cek Skenario B: Apakah passwordnya masih MD5? (User legacy dari aplikasi lama)
-            elseif (md5($inputPassword) === $dbPassword) {
-                $isPasswordValid = true;
-                $needsHashUpgrade = true; // Tandai bahwa password ini harus di-upgrade!
+            $isValid = false;
+            // Logika MD5 / Plain / Bcrypt
+            if (md5($request->password) === $user->t_user_password) {
+                $isValid = true;
+            } elseif ($request->password === $user->t_user_password) {
+                $isValid = true;
+            } elseif (Hash::check($request->password, $user->t_user_password)) {
+                $isValid = true;
             }
 
-            // 3. Jika password valid (baik MD5 maupun Bcrypt)
-            if ($isPasswordValid) {
-                // Login-kan user secara manual
-                Auth::login($user, $request->boolean('remember'));
-                $request->session()->regenerate();
+            if ($isValid) {
+                // 1. Simpan data user ke SESSION secara manual
+                session([
+                    'admin_logged_in' => true,
+                    'admin_id'        => $user->t_user_id,
+                    'admin_username'  => $user->t_user_username,
+                ]);
 
-                // Update data tracking
+                // 2. Update status di database
                 $user->t_user_last_login = now();
                 $user->t_user_islogin = 1;
-
-                // EKSEKUSI UPGRADE: Jika tadi masuk lewat MD5, kita ubah jadi Bcrypt sekarang!
-                if ($needsHashUpgrade) {
-                    $user->t_user_password = Hash::make($inputPassword);
-                }
-
                 $user->save();
 
-                return redirect()->intended('admin/dashboard');
+                // 3. Redirect ke dashboard
+                return redirect()->route('admin.dashboard');
             }
         }
 
-        // Jika user tidak ditemukan ATAU password salah
-        return back()->withErrors([
-            'username' => 'Username atau password yang Anda masukkan salah.',
-        ])->onlyInput('username');
+        return back()->withErrors(['login_error' => 'Username atau password salah.']);
+    }
+
+    // Tambahkan juga fungsi Logout Manual
+    public function logout(Request $request)
+    {
+        $user = \App\Models\User::where('t_user_id', session('admin_id'))->first();
+        if ($user) {
+            $user->t_user_islogin = 0;
+            $user->save();
+        }
+
+        // Hapus semua session manual
+        $request->session()->forget(['admin_logged_in', 'admin_id', 'admin_username']);
+        $request->session()->flush();
+
+        return redirect()->route('login');
     }
 }

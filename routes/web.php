@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PenggunaController;
+use App\Http\Controllers\Admin\AuthController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -58,21 +59,38 @@ Route::get('/spi', function () {
 //Route::get('/berita', [BeritaController::class, 'index']);
 
 
-// Route untuk melihat halaman login Back Office
 Route::prefix('admin')->group(function () {
-    Route::get('/login', function () { return view('admin.auth.login'); })->name('admin.login');
-    
-    // Rute Dashboard Admin
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
+
+    // 1. RUTE UNTUK GUEST (Belum Login)
+    // Menggunakan middleware 'guest' agar user yang sudah login tidak bisa masuk ke halaman login lagi
+    Route::middleware('guest')->group(function () {
+        Route::get('/login', function () { 
+            return view('admin.auth.login'); 
+        })->name('login'); // PENTING: Nama rute harus 'login' agar otomatis diredirect oleh Laravel
+        
+        Route::post('/login', [AuthController::class, 'authenticate'])->name('admin.login.submit');
     });
 
-    // Pengguna CRUD
-    Route::get('/pengguna', [PenggunaController::class, 'index']);
-    Route::get('/pengguna/tambah', [PenggunaController::class, 'create']);
-    Route::post('/pengguna', [PenggunaController::class, 'store']);
-    Route::get('/pengguna/{id}/edit', [PenggunaController::class, 'edit']);
-    Route::put('/pengguna/{id}', [PenggunaController::class, 'update']);
-    //Route::delete('/pengguna/{id}', [PenggunaController::class, 'destroy']);
-    Route::post('/pengguna/{id}/disable', [PenggunaController::class, 'disable']);
+    // 2. RUTE TERPROTEKSI (Harus Login)
+    // Semua rute di dalam grup ini hanya bisa diakses jika sudah melewati middleware 'auth'
+    Route::middleware('auth')->group(function () {
+        
+        // Dashboard Admin
+        Route::get('/dashboard', function () {
+            return view('admin.dashboard');
+        })->name('admin.dashboard');
+
+        // Pengguna CRUD
+        Route::prefix('pengguna')->group(function () {
+            Route::get('/', [PenggunaController::class, 'index'])->name('admin.pengguna.index');
+            Route::get('/tambah', [PenggunaController::class, 'create'])->name('admin.pengguna.tambah');
+            Route::post('/', [PenggunaController::class, 'store'])->name('admin.pengguna.store');
+            Route::get('/{id}/edit', [PenggunaController::class, 'edit'])->name('admin.pengguna.edit');
+            Route::put('/{id}', [PenggunaController::class, 'update'])->name('admin.pengguna.update');
+            Route::post('/{id}/disable', [PenggunaController::class, 'disable'])->name('admin.pengguna.disable');
+        });
+
+        // Fitur Logout
+        Route::post('/logout', [AuthController::class, 'logout'])->name('admin.logout');
+    });
 });

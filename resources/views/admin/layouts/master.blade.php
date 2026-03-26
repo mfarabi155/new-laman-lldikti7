@@ -154,7 +154,7 @@
                             </a>
                             <div class="border-t border-slate-100 my-1"></div>
                             
-                            <form method="POST" action="#">
+                            <form method="POST" action="{{ route('admin.logout') }}">
                                 @csrf
                                 <button type="submit" class="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 transition">
                                     <i class="fas fa-sign-out-alt w-4 text-center"></i> Keluar

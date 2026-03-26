@@ -57,6 +57,7 @@ class PenggunaController extends Controller
             'idx'                 => $lastIdx + 1,
             't_user_username'     => $request->username,
             't_user_password'     => Hash::make($request->password),
+            //'t_user_password'     => md5($request->password),
             't_bagian_id'         => $request->bagian_id,
             't_user_islogin'      => 0,
             't_user_status'       => 1,
