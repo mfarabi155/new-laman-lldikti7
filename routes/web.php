@@ -8,6 +8,7 @@ use App\Http\Controllers\Laman\KinerjaController;
 use App\Http\Controllers\Laman\BerandaController;
 use App\Http\Controllers\Laman\PengumumanController as LamanPengumumanController;
 use App\Http\Controllers\Laman\BeritaController as LamanBeritaController;
+use App\Http\Controllers\Laman\IkmController as PublikIkm;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\IkmController;
 use App\Http\Controllers\Admin\SurveySettingController;
@@ -77,12 +78,15 @@ Route::prefix('kinerja')->group(function () {
     Route::get('/ikm', function () {
         return view('laman.kinerja.ikm');
     })->name('kinerja.ikm');
+    Route::get('/ikm', [PublikIkm::class, 'ikmResults'])->name('ikm.ikmResults');
 });
 
 Route::get('/spi', function () {
     return view('laman.spi.index');
 })->name('spi.index');
 
+Route::get('/form-ikm', [PublikIkm::class, 'index'])->name('ikm.index');
+Route::post('/form-ikm', [PublikIkm::class, 'store'])->name('ikm.store');
 
 // ==========================================
 // AREA ADMIN
