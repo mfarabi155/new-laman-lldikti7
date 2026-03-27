@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Bagian;
 
 class AuthController extends Controller
 {
@@ -17,33 +17,43 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $user = \App\Models\User::where('t_user_username', $request->username)->first();
+        $user = User::where('t_user_username', $request->username)->first();
 
         if ($user) {
+            if ($user->t_user_status == 0) {
+                return back()->withErrors([
+                    'login_error' => 'Login ditolak! Akun Anda telah dinonaktifkan. Hubungi Administrator.'
+                ])->onlyInput('username');
+            }
             $isValid = false;
-            // Logika MD5 / Plain / Bcrypt
-            if (md5($request->password) === $user->t_user_password) {
+            
+            if (md5(base64_decode($request->password)) === $user->t_user_password) {
                 $isValid = true;
             } elseif ($request->password === $user->t_user_password) {
                 $isValid = true;
-            } elseif (Hash::check($request->password, $user->t_user_password)) {
-                $isValid = true;
+            } else {
+                try {
+                    if (Hash::check($request->password, $user->t_user_password)) {
+                        $isValid = true;
+                    }
+                } catch (\Exception $e) {
+                    $isValid = false;
+                }
             }
-
             if ($isValid) {
-                // 1. Simpan data user ke SESSION secara manual
+                $bagianNama = Bagian::where('bagian_id', $user->t_bagian_id)->value('bagian_nama') ?? 'Administrator';
                 session([
                     'admin_logged_in' => true,
                     'admin_id'        => $user->t_user_id,
                     'admin_username'  => $user->t_user_username,
+                    'admin_bagian_id'   => $user->t_bagian_id,
+                    'admin_bagian_nama' => $bagianNama
                 ]);
 
-                // 2. Update status di database
                 $user->t_user_last_login = now();
                 $user->t_user_islogin = 1;
                 $user->save();
 
-                // 3. Redirect ke dashboard
                 return redirect()->route('admin.dashboard');
             }
         }
@@ -51,16 +61,14 @@ class AuthController extends Controller
         return back()->withErrors(['login_error' => 'Username atau password salah.']);
     }
 
-    // Tambahkan juga fungsi Logout Manual
     public function logout(Request $request)
     {
-        $user = \App\Models\User::where('t_user_id', session('admin_id'))->first();
+        $user = User::where('t_user_id', session('admin_id'))->first();
         if ($user) {
             $user->t_user_islogin = 0;
             $user->save();
         }
 
-        // Hapus semua session manual
         $request->session()->forget(['admin_logged_in', 'admin_id', 'admin_username']);
         $request->session()->flush();
 

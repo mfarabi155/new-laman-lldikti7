@@ -10,7 +10,7 @@
             <nav class="flex justify-center mb-6" aria-label="Breadcrumb" data-aos="fade-down" data-aos-duration="800">
                 <ol class="inline-flex items-center space-x-1 md:space-x-3 text-sm font-medium">
                     <li class="inline-flex items-center">
-                        <a href="#" class="text-slate-500 hover:text-secondary transition flex items-center">
+                        <a href="{{ route('home') }}" class="text-slate-500 hover:text-secondary transition flex items-center">
                             <i class="fas fa-home mr-2"></i> Beranda
                         </a>
                     </li>
@@ -51,12 +51,12 @@
                             <div class="absolute inset-0 bg-gradient-to-tr from-sky-100 to-amber-50 opacity-50 z-0"></div>
                             
                             <div class="relative z-10 rounded-2xl overflow-hidden shadow-inner bg-slate-200 aspect-[3/4]">
-                                <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                                <img src="{{ asset('laman/img/kepala-lldikti7.png') }}" 
                                      alt="Foto Kepala LLDIKTI VII" 
                                      class="w-full h-full object-cover object-top transform group-hover:scale-105 transition duration-700">
                                 
                                 <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary/90 to-transparent p-6 text-center">
-                                    <h3 class="text-white font-bold text-xl drop-shadow-md">Prof. Dr. Nama Kepala Lembaga</h3>
+                                    <h3 class="text-white font-bold text-xl drop-shadow-md">Prof. Dr. Dyah Sawitri, S.E., M.M.</h3>
                                     <p class="text-accent text-sm font-medium tracking-wide">Kepala LLDIKTI Wilayah VII</p>
                                 </div>
                             </div>
@@ -65,8 +65,8 @@
                         <div class="mt-8 bg-white p-6 rounded-2xl shadow-soft border border-slate-100 text-center">
                             <h4 class="text-sm font-bold text-primary uppercase tracking-widest mb-4">Hubungi Kami</h4>
                             <div class="flex justify-center space-x-4">
-                                <a href="#" class="w-10 h-10 rounded-full bg-sky-50 text-secondary flex items-center justify-center hover:bg-secondary hover:text-white transition"><i class="fas fa-envelope"></i></a>
-                                <a href="#" class="w-10 h-10 rounded-full bg-sky-50 text-secondary flex items-center justify-center hover:bg-secondary hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                                <a href="mailto:info@kopertis7.go.id" class="w-10 h-10 rounded-full bg-sky-50 text-secondary flex items-center justify-center hover:bg-secondary hover:text-white transition shadow-sm"><i class="fas fa-envelope"></i></a>
+                                <a href="#" class="w-10 h-10 rounded-full bg-sky-50 text-secondary flex items-center justify-center hover:bg-secondary hover:text-white transition shadow-sm"><i class="fab fa-instagram"></i></a>
                             </div>
                         </div>
                     </div>
@@ -76,37 +76,56 @@
                     <div class="bg-white p-10 md:p-14 rounded-3xl shadow-soft border border-slate-100 relative">
                         <i class="fas fa-quote-left absolute text-sky-100 text-8xl -top-4 -left-4 -z-10 transform -rotate-12"></i>
                         
-                        <div class="prose prose-lg prose-slate max-w-none text-slate-700 leading-loose">
+                        {{-- MENGGUNAKAN text-justify DAN leading-relaxed UNTUK KERAPIAN --}}
+                        <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed text-justify">
                             
-                            <h2 class="text-3xl font-extrabold text-primary mb-6">Assalamu'alaikum Warahmatullahi Wabarakatuh, <br>Salam Sejahtera bagi kita semua.</h2>
+                            {{-- SAPAAN AWAL DIRAPIKAN DENGAN BORDER BAWAH --}}
+                            <div class="border-b border-slate-100 pb-6 mb-8">
+                                <h2 class="text-2xl md:text-3xl font-extrabold text-primary leading-snug">
+                                    Assalamu'alaikum Warahmatullahi Wabarakatuh, <br>
+                                    <span class="text-xl md:text-2xl text-slate-600 font-bold">Salam Sejahtera bagi kita semua.</span>
+                                </h2>
+                            </div>
                             
-                            <p class="first-letter:text-7xl first-letter:font-extrabold first-letter:text-secondary first-letter:mr-3 first-letter:float-left">
-                                Puji syukur senantiasa kita panjatkan kehadirat Tuhan Yang Maha Esa atas segala rahmat dan karunia-Nya. Selamat datang di laman resmi Lembaga Layanan Pendidikan Tinggi (LLDIKTI) Wilayah VII Jawa Timur.
+                            <p class="first-letter:text-6xl first-letter:font-extrabold first-letter:text-secondary first-letter:mr-3 first-letter:float-left first-letter:mt-1.5">
+                                Selamat datang kepada seluruh pengunjung laman web Lembaga Layanan Pendidikan Tinggi (LLDIKTI) Wilayah VII Jawa Timur.
                             </p>
 
                             <p>
-                                Laman ini hadir sebagai wujud nyata komitmen kami dalam mengedepankan transparansi, akuntabilitas, dan pelayanan prima kepada seluruh pemangku kepentingan, khususnya perguruan tinggi negeri maupun swasta, dosen, mahasiswa, serta masyarakat luas di lingkungan Provinsi Jawa Timur.
+                                Di era global dan pesatnya Teknologi Informasi, keberadaan sebuah laman web untuk suatu organisasi sangatlah penting. Laman web LLDIKTI Wilayah VII merupakan media elektronik yang dapat dijadikan sebagai sarana informasi bagi LLDIKTI Wilayah VII dalam melaksanakan fasilitasi pelayanan bagi perguruan tinggi dan lembaga terkait serta masyarakat dalam rangka keterbukaan publik khususnya dalam hal pendidikan tinggi.
                             </p>
 
-                            <blockquote class="my-10 p-6 bg-sky-50 border-l-4 border-accent rounded-r-2xl shadow-sm text-primary font-medium italic text-xl">
-                                "LLDIKTI Wilayah VII berkomitmen penuh untuk menghadirkan <span class="text-secondary font-bold">Layanan Humanis Berintegritas</span> guna mewujudkan pendidikan tinggi yang bermutu, inovatif, dan berdaya saing global."
+                            <p>
+                                Laman web juga dapat dijadikan sarana komunikasi antar Perguruan Tinggi, bahkan Perguruan Tinggi dapat memanfaatkan laman web ini untuk melakukan konsolidasi, sehingga terbentuk jejaring yang makin besar dan kuat.
+                            </p>
+
+                            <blockquote class="my-10 p-6 md:p-8 bg-sky-50/80 border-l-4 border-accent rounded-r-2xl shadow-sm text-primary font-medium italic text-xl leading-relaxed text-left">
+                                "LLDIKTI Wilayah VII menyadari bahwa Perguruan Tinggi memiliki potensi yang apabila digali dan dikelola dengan baik dan benar akan mampu memberikan kontribusi yang sangat positif dalam <span class="text-secondary font-bold">mencerdaskan kehidupan bangsa.</span>"
                             </blockquote>
 
                             <p>
-                                Dalam era disrupsi dan percepatan digitalisasi saat ini, transformasi pendidikan tinggi menjadi sebuah keharusan. Melalui implementasi kebijakan Merdeka Belajar Kampus Merdeka (MBKM), kami terus memfasilitasi dan mendorong perguruan tinggi untuk beradaptasi, berinovasi, serta meningkatkan kualitas Tri Dharma Perguruan Tinggi.
+                                Oleh karena itu, kami sangat berharap, melalui laman web ini, komunikasi antara LLDIKTI Wilayah VII dan perguruan tinggi dapat berjalan lebih cepat dan lancar.
                             </p>
 
                             <p>
-                                Kami menyadari bahwa tantangan ke depan tidaklah ringan. Namun, dengan sinergi, kolaborasi, dan integritas yang kuat dari seluruh civitas akademika, kami yakin perguruan tinggi di Jawa Timur mampu melahirkan lulusan-lulusan unggul yang menjadi motor penggerak kemajuan bangsa Indonesia.
+                                Laman web LLDIKTI Wilayah VII merupakan wahana yang dapat digunakan sebagai media penyebarluasan informasi-informasi baik dari Kementerian Riset, Teknologi, dan Pendidikan Tinggi maupun perguruan tinggi, yang memang harus diketahui oleh pemangku kepentingan secara luas. Dalam laman web LLDIKTI Wilayah VII ini antara lain memuat jurnal elektronik, pengumuman, peraturan, dan tautan ke layanan-layanan pendidikan tinggi.
                             </p>
 
                             <p>
-                                Akhir kata, semoga laman informasi ini memberikan manfaat seluas-luasnya. Kami senantiasa membuka diri terhadap kritik dan saran yang membangun demi perbaikan mutu layanan kami di masa mendatang.
+                                Kami menyadari bahwa masih banyak kekurangan pada laman web LLDIKTI Wilayah VII ini, oleh karenanya, laman web akan terus dikembangkan, sehingga tampilan, isi, dan mutunya menjadi lebih baik lagi dan akuntabel. Untuk itu, pengunjung laman web LLDIKTI Wilayah VII yang kami hormati, kami mengharapkan saran dan komentar yang berkesinambungan guna menunjang peningkatan pelayanan dan informasi yang dibutuhkan bersama. Saran dan komentar dapat disampaikan melalui akses buku tamu dan surat elektronik ke <a href="mailto:ult.lldikti7@kemdikbud.go.id" class="text-secondary hover:text-primary transition-colors hover:underline font-semibold">ult.lldikti7@kemdikbud.go.id</a>.
                             </p>
 
-                            <div class="mt-12 pt-8 border-t border-slate-100 flex flex-col items-end text-right">
-                                <p class="text-slate-500 mb-2">Surabaya, 26 Maret 2026</p>
-                                <p class="font-bold text-primary text-xl mb-1">Prof. Dr. Nama Kepala Lembaga</p>
+                            <p>
+                                Akhirnya kami mengucapkan terima kasih atas kepercayaan para pengunjung dalam menggunakan laman web ini sebagai rujukan layanan pendidikan tinggi sampai saat ini. Semoga dengan transformasi laman web ini dapat meningkatkan layanan pendidikan tinggi dan memberikan manfaat yang lebih besar kepada masyarakat.
+                            </p>
+
+                            <p class="font-bold text-primary mt-10 text-xl text-left">
+                                Wassalamualaikum Wr. Wb.
+                            </p>
+
+                            <div class="mt-10 pt-8 border-t border-slate-100 flex flex-col items-end text-right">
+                                <p class="text-slate-500 mb-2">Surabaya, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+                                <p class="font-bold text-primary text-xl mb-1">Prof. Dr. Dyah Sawitri, S.E., M.M.</p>
                                 <p class="text-secondary font-medium">Kepala LLDIKTI Wilayah VII</p>
                             </div>
 

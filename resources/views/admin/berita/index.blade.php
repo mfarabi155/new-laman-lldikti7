@@ -1,0 +1,165 @@
+@extends('admin.layouts.master')
+
+@section('title', 'Daftar Berita')
+
+@section('content')
+
+    {{-- Notifikasi Sukses --}}
+    @if(session('success'))
+        <div class="mb-4 p-4 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-700 rounded-r-xl shadow-sm flex items-center justify-between" x-data="{ show: true }" x-show="show">
+            <div class="flex items-center gap-3">
+                <i class="fas fa-check-circle text-lg"></i>
+                <p class="font-bold text-sm">{{ session('success') }}</p>
+            </div>
+            <button @click="show = false" class="text-emerald-500 hover:text-emerald-700">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    @endif
+
+    {{-- Header Judul & Tombol Tambah --}}
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 relative z-10">
+        <h2 class="text-2xl font-bold text-white tracking-wide">Daftar Berita</h2>
+        {{-- MENGGUNAKAN ROUTE --}}
+        <a href="{{ route('admin.berita.tambah') }}" class="bg-white text-argon-blue hover:bg-slate-50 hover:shadow-lg font-bold py-2.5 px-5 rounded-lg shadow-sm transition-all duration-200 flex items-center gap-2 text-sm transform hover:-translate-y-0.5">
+            <i class="fas fa-plus"></i> Tambah Berita
+        </a>
+    </div>
+
+    {{-- Container Utama --}}
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden relative z-10">
+        
+        {{-- Area Filter Pencarian --}}
+        <div class="p-6 border-b border-slate-100 bg-white">
+            {{-- MENGGUNAKAN ROUTE --}}
+            <form action="{{ route('admin.berita.index') }}" method="GET" class="flex flex-wrap gap-3 items-end">
+                
+                <div class="flex-1 min-w-[150px]">
+                    <div class="relative">
+                        <input type="date" name="start_date" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-sm px-4 py-2.5 focus:ring-2 focus:ring-argon-blue focus:bg-white text-slate-500 cursor-pointer">
+                    </div>
+                </div>
+
+                <div class="flex-1 min-w-[150px]">
+                    <div class="relative">
+                        <input type="date" name="end_date" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-sm px-4 py-2.5 focus:ring-2 focus:ring-argon-blue focus:bg-white text-slate-500 cursor-pointer">
+                    </div>
+                </div>
+
+                <div class="flex-1 min-w-[150px]">
+                    <select name="status" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-sm px-4 py-2.5 focus:ring-2 focus:ring-argon-blue focus:bg-white text-slate-500 cursor-pointer appearance-none">
+                        <option value="">Semua Status</option>
+                        <option value="0">Tampil</option>
+                        <option value="1">Sembunyi</option>
+                    </select>
+                </div>
+
+                <div class="flex-1 min-w-[150px]">
+                    <select name="bagian" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-sm px-4 py-2.5 focus:ring-2 focus:ring-argon-blue focus:bg-white text-slate-500 cursor-pointer appearance-none">
+                        <option value="">Semua Bagian</option>
+                        {{-- Opsi bagian bisa diloop di sini --}}
+                    </select>
+                </div>
+
+                <div class="flex-[2] min-w-[200px]">
+                    <input type="text" name="search" value="{{ request('search') }}" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-sm px-4 py-2.5 focus:ring-2 focus:ring-argon-blue focus:bg-white text-slate-700" placeholder="Cari Judul">
+                </div>
+
+                <button type="submit" class="bg-argon-blue hover:bg-argon-indigo text-white px-6 py-2.5 rounded-lg transition-colors shadow-sm font-bold flex items-center gap-2">
+                    <i class="fas fa-filter text-sm"></i> Tampil
+                </button>
+            </form>
+        </div>
+
+        {{-- Tabel Data --}}
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider">
+                        <th class="px-6 py-4 font-bold w-12 text-center">No</th>
+                        <th class="px-6 py-4 font-bold">Judul</th>
+                        <th class="px-6 py-4 font-bold">Bagian</th>
+                        <th class="px-6 py-4 font-bold text-center">Status</th>
+                        <th class="px-6 py-4 font-bold">Tanggal Berita</th>
+                        <th class="px-6 py-4 font-bold text-center w-24">Aksi</th>
+                    </tr>
+                </thead>
+                
+                <tbody class="text-slate-600 text-sm divide-y divide-slate-100">
+                    
+                    {{-- VARIABEL DIUBAH MENJADI HURUF KECIL: $berita --}}
+                    @forelse($berita as $key => $item)
+                        <tr class="hover:bg-slate-50/50 transition-colors duration-150">
+                            {{-- No --}}
+                            <td class="px-6 py-4 text-center font-medium text-slate-400">
+                                {{ $berita->firstItem() + $key }}
+                            </td>
+                            
+                            {{-- Judul --}}
+                            <td class="px-6 py-4 text-argon-dark font-medium whitespace-normal max-w-xs leading-snug">
+                                {{ $item->info_judul }}
+                            </td>
+                            
+                            {{-- Bagian --}}
+                            <td class="px-6 py-4 text-slate-500 whitespace-normal max-w-[200px]">
+                                {{ $item->bagian_nama ?? 'Umum' }}
+                            </td>
+                            
+                            {{-- Status Tampil/Sembunyi --}}
+                            <td class="px-6 py-4 text-center">
+                                @if($item->info_status == 0)
+                                    <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold bg-emerald-500 text-white shadow-sm">
+                                        Tampil
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold bg-red-500 text-white shadow-sm">
+                                        Sembunyi
+                                    </span>
+                                @endif
+                            </td>
+                            
+                            {{-- Tanggal --}}
+                            <td class="px-6 py-4 text-slate-500">
+                                {{ \Carbon\Carbon::parse($item->info_tanggal)->translatedFormat('d F Y') }}
+                            </td>
+                            
+                            {{-- Aksi --}}
+                            <td class="px-6 py-4 text-center">
+                                <div class="flex items-center justify-center gap-2">
+                                    {{-- Tombol Edit MENGGUNAKAN ROUTE --}}
+                                    <a href="{{ route('admin.berita.edit', $item->info_id) }}" class="w-8 h-8 rounded bg-orange-400 hover:bg-orange-500 text-white flex items-center justify-center transition-colors shadow-sm" title="Edit">
+                                        <i class="fas fa-pen text-xs"></i>
+                                    </a>
+                                    
+                                    {{-- Tombol Toggle Tampil/Sembunyikan MENGGUNAKAN ROUTE --}}
+                                    <form action="{{ route('admin.berita.disable', $item->info_id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin mengubah status Berita ini?');">
+                                        @csrf
+                                        <button type="submit" class="w-8 h-8 rounded {{ $item->info_status == 0 ? 'bg-red-400 hover:bg-red-500' : 'bg-emerald-400 hover:bg-emerald-500' }} text-white flex items-center justify-center transition-colors shadow-sm" title="{{ $item->info_status == 0 ? 'Sembunyikan' : 'Tampilkan' }}">
+                                            <i class="fas {{ $item->info_status == 0 ? 'fa-eye-slash' : 'fa-eye' }} text-xs"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="px-6 py-8 text-center text-slate-400">
+                                <i class="fas fa-newspaper text-4xl mb-3 opacity-50"></i>
+                                <p class="text-sm">Belum ada data Berita yang tersedia.</p>
+                            </td>
+                        </tr>
+                    @endforelse
+
+                </tbody>
+            </table>
+        </div>
+
+        {{-- Pagination (HURUF KECIL) --}}
+        <div class="px-6 py-4 border-t border-slate-100 bg-slate-50/50">
+            {{ $berita->links('pagination::tailwind') }}
+        </div>
+
+    </div>
+
+@endsection
