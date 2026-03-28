@@ -51,7 +51,7 @@
                             <div class="absolute inset-0 bg-gradient-to-tr from-sky-100 to-amber-50 opacity-50 z-0"></div>
                             
                             <div class="relative z-10 rounded-2xl overflow-hidden shadow-inner bg-slate-200 aspect-[3/4]">
-                                <img src="{{ asset('laman/img/kepala-lldikti7.png') }}" 
+                                <img src="{{ asset('laman/img/kepala-lldikti7-3.jpeg') }}" 
                                      alt="Foto Kepala LLDIKTI VII" 
                                      class="w-full h-full object-cover object-top transform group-hover:scale-105 transition duration-700">
                                 
