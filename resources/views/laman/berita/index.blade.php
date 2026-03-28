@@ -84,7 +84,7 @@
                             <i class="fas fa-bookmark mr-1"></i> Liputan Berita
                         </span>
 
-                        <a href="{{ route('berita.show', $item->slug) }}" class="block mb-3">
+                        <a href="{{ route('berita.show', $item->slug ?: $item->info_id) }}" class="block mb-3">
                             <h2 class="text-xl font-bold text-slate-800 group-hover:text-argon-blue transition-colors line-clamp-2 leading-snug">
                                 {{ $item->info_judul }}
                             </h2>
@@ -100,7 +100,7 @@
                                 <span class="truncate max-w-[120px]">{{ $item->bagian_nama ?? 'Admin LLDIKTI' }}</span>
                             </div>
                             
-                            <a href="{{ route('berita.show', $item->slug) }}" class="flex items-center gap-2 text-sm font-bold text-argon-blue hover:text-argon-indigo transition-colors group/btn">
+                            <a href="{{ route('berita.show', $item->slug ?: $item->info_id) }}" class="flex items-center gap-2 text-sm font-bold text-argon-blue hover:text-argon-indigo transition-colors group/btn">
                                 Baca <i class="fas fa-arrow-right text-[10px] transform group-hover/btn:translate-x-1 transition-transform"></i>
                             </a>
                         </div>

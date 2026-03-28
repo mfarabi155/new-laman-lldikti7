@@ -29,22 +29,26 @@ class BeritaController extends Controller
 
     public function show($slug)
     {
-        // Ambil detail berita beserta semua gambarnya (hapus filter info_judul_file)
+        // Cari berita berdasarkan slug ATAU info_id (untuk data lama)
         $berita = Info::with('details')
             ->leftJoin('t_bagian', 't_info.t_bagian_id', '=', 't_bagian.bagian_id')
             ->select('t_info.*', 't_bagian.bagian_nama')
             ->where('id_info_jenis', 1)
             ->where('info_status', 0)
-            ->where('slug', $slug)
+            ->where(function ($query) use ($slug) {
+                // Mengecek ke kolom slug ATAU kolom info_id
+                $query->where('slug', $slug)
+                    ->orWhere('info_id', $slug);
+            })
             ->firstOrFail();
 
-        // Ambil 4 berita terbaru untuk sidebar (hapus filter info_judul_file)
+        // Ambil 4 berita terbaru untuk sidebar
         $beritaTerbaru = Info::with('details')
             ->leftJoin('t_bagian', 't_info.t_bagian_id', '=', 't_bagian.bagian_id')
             ->select('t_info.*', 't_bagian.bagian_nama')
             ->where('id_info_jenis', 1)
             ->where('info_status', 0)
-            ->where('info_id', '!=', $berita->info_id) // Kecualikan berita yang sedang dibaca
+            ->where('info_id', '!=', $berita->info_id)
             ->orderBy('info_tanggal', 'desc')
             ->take(4)
             ->get();

@@ -388,10 +388,10 @@
                         class="text-xs text-secondary font-medium hover:text-blue-800">Official &rarr;</a>
                 </h3>
 
-                <div
-                    class="aspect-w-16 aspect-h-9 rounded-2xl overflow-hidden shadow-xl border-2 border-slate-100 relative group z-10">
-                    {{-- MENGGUNAKAN ID VIDEO: n5SXW_uHuZA --}}
-                    <iframe class="w-full h-72 relative z-10" src="https://www.youtube.com/embed/n5SXW_uHuZA"
+                <div class="aspect-w-16 aspect-h-9 rounded-2xl overflow-hidden shadow-xl border-2 border-slate-100 relative group z-10">
+                    {{-- ID Video: oLQxBsb5xdA | start=5 (mulai di detik ke 5) | origin=... (anti error 153 di production) --}}
+                    <iframe class="w-full h-72 relative z-10" 
+                        src="https://www.youtube.com/embed/oLQxBsb5xdA?start=5&origin={{ urlencode(url('/')) }}"
                         title="YouTube video player" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen>
