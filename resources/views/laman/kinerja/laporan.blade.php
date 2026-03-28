@@ -68,126 +68,44 @@
                         </thead>
                         
                         <tbody class="text-slate-700 text-sm divide-y divide-slate-100">
-                            
-                            <tr class="hover:bg-sky-50 transition-colors duration-200 group">
-                                <td class="px-6 py-5 text-center font-medium text-slate-400">1</td>
-                                <td class="px-6 py-5 font-bold text-primary group-hover:text-secondary transition-colors">
-                                    Laporan Kinerja
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold bg-secondary text-white shadow-sm">
-                                        2024
-                                    </span>
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <a href="#" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sky-100 text-secondary hover:bg-secondary hover:text-white transition-colors" title="Unduh File">
-                                        <i class="fas fa-file-pdf"></i>
-                                    </a>
-                                </td>
-                            </tr>
-
-                            <tr class="hover:bg-sky-50 transition-colors duration-200 group">
-                                <td class="px-6 py-5 text-center font-medium text-slate-400">2</td>
-                                <td class="px-6 py-5 font-semibold text-primary group-hover:text-secondary transition-colors">
-                                    Laporan Kinerja
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold bg-sky-100 text-secondary border border-sky-200">
-                                        2023
-                                    </span>
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <a href="#" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sky-100 text-secondary hover:bg-secondary hover:text-white transition-colors" title="Unduh File">
-                                        <i class="fas fa-file-pdf"></i>
-                                    </a>
-                                </td>
-                            </tr>
-
-                            <tr class="hover:bg-sky-50 transition-colors duration-200 group">
-                                <td class="px-6 py-5 text-center font-medium text-slate-400">3</td>
-                                <td class="px-6 py-5 font-semibold text-primary group-hover:text-secondary transition-colors">
-                                    Laporan Kinerja
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold bg-sky-100 text-secondary border border-sky-200">
-                                        2022
-                                    </span>
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <a href="#" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sky-100 text-secondary hover:bg-secondary hover:text-white transition-colors" title="Unduh File">
-                                        <i class="fas fa-file-pdf"></i>
-                                    </a>
-                                </td>
-                            </tr>
-
-                            <tr class="hover:bg-sky-50 transition-colors duration-200 group">
-                                <td class="px-6 py-5 text-center font-medium text-slate-400">4</td>
-                                <td class="px-6 py-5 font-semibold text-primary group-hover:text-secondary transition-colors">
-                                    Laporan Kinerja
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold bg-slate-100 text-slate-500 border border-slate-200">
-                                        2021
-                                    </span>
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <a href="#" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sky-100 text-secondary hover:bg-secondary hover:text-white transition-colors" title="Unduh File">
-                                        <i class="fas fa-file-pdf"></i>
-                                    </a>
-                                </td>
-                            </tr>
-
-                            <tr class="hover:bg-sky-50 transition-colors duration-200 group">
-                                <td class="px-6 py-5 text-center font-medium text-slate-400">5</td>
-                                <td class="px-6 py-5 font-semibold text-primary group-hover:text-secondary transition-colors">
-                                    Laporan Kinerja
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold bg-slate-100 text-slate-500 border border-slate-200">
-                                        2020
-                                    </span>
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <a href="#" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sky-100 text-secondary hover:bg-secondary hover:text-white transition-colors" title="Unduh File">
-                                        <i class="fas fa-file-pdf"></i>
-                                    </a>
-                                </td>
-                            </tr>
-
-                            <tr class="hover:bg-sky-50 transition-colors duration-200 group">
-                                <td class="px-6 py-5 text-center font-medium text-slate-400">6</td>
-                                <td class="px-6 py-5 font-semibold text-primary group-hover:text-secondary transition-colors">
-                                    Laporan Kinerja
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold bg-slate-100 text-slate-500 border border-slate-200">
-                                        2019
-                                    </span>
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <a href="#" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sky-100 text-secondary hover:bg-secondary hover:text-white transition-colors" title="Unduh File">
-                                        <i class="fas fa-file-pdf"></i>
-                                    </a>
-                                </td>
-                            </tr>
-
-                            <tr class="hover:bg-sky-50 transition-colors duration-200 group">
-                                <td class="px-6 py-5 text-center font-medium text-slate-400">7</td>
-                                <td class="px-6 py-5 font-semibold text-primary group-hover:text-secondary transition-colors">
-                                    Laporan Kinerja
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold bg-slate-100 text-slate-500 border border-slate-200">
-                                        2018
-                                    </span>
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <a href="#" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sky-100 text-secondary hover:bg-secondary hover:text-white transition-colors" title="Unduh File">
-                                        <i class="fas fa-file-pdf"></i>
-                                    </a>
-                                </td>
-                            </tr>
-
+                            @forelse($laporan as $index => $item)
+                                <tr class="hover:bg-sky-50 transition-colors duration-200 group">
+                                    <td class="px-6 py-5 text-center font-medium text-slate-400">{{ $index + 1 }}</td>
+                                    
+                                    <td class="px-6 py-5 font-bold text-primary group-hover:text-secondary transition-colors">
+                                        {{ $item->lakin_judul }}
+                                    </td>
+                                    
+                                    <td class="px-6 py-5 text-center">
+                                        {{-- Badge Style Berbeda untuk Data Pertama (Terbaru) --}}
+                                        @if($loop->first)
+                                            <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold bg-secondary text-white shadow-sm">
+                                                {{ $item->lakin_tahun }}
+                                            </span>
+                                        @else
+                                            <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold bg-sky-100 text-secondary border border-sky-200">
+                                                {{ $item->lakin_tahun }}
+                                            </span>
+                                        @endif
+                                    </td>
+                                    
+                                    <td class="px-6 py-5 text-center">
+                                        @if($item->lakin_file)
+                                            <a href="{{ asset('storage/renstra/' . $item->lakin_file) }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sky-100 text-secondary hover:bg-secondary hover:text-white transition-colors shadow-sm" title="Unduh File">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </a>
+                                        @else
+                                            <span class="text-slate-300 italic text-xs">Kosong</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="px-6 py-12 text-center text-slate-400 italic">
+                                        Data laporan kinerja belum tersedia.
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

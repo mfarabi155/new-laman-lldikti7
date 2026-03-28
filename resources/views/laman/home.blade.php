@@ -1,7 +1,7 @@
 @extends('laman.layouts.master')
 
 @section('content')
-<section x-data="{
+    <section x-data="{
         activeSlide: 1,
         loop() { setInterval(() => { this.activeSlide = this.activeSlide === 3 ? 1 : this.activeSlide + 1 }, 6000) }
     }" x-init="loop"
@@ -126,13 +126,23 @@
 
                         <div class="overflow-hidden relative h-96 bg-slate-100 flex items-center justify-center">
                             @php
-                                $coverUtama = $beritaUtama->details->where('info_judul_file', 'Gambar Berita')->first();
+                                $coverUtama = $beritaUtama->details->first(); // Hapus where Gambar Berita
+                                $utamaSrc = null;
+
+                                if ($coverUtama && !empty($coverUtama->info_file)) {
+                                    $filename = basename($coverUtama->info_file);
+                                    if (file_exists(public_path('storage/berita/' . $filename))) {
+                                        $utamaSrc = asset('storage/berita/' . $filename);
+                                    } elseif (file_exists(public_path('storage/oldberita/' . $filename))) {
+                                        $utamaSrc = asset('storage/oldberita/' . $filename);
+                                    } elseif (file_exists(public_path('storage/' . $coverUtama->info_file))) {
+                                        $utamaSrc = asset('storage/' . $coverUtama->info_file);
+                                    }
+                                }
                             @endphp
 
-                            {{-- Logika Gambar: Jika tidak ada, pakai logo LLDIKTI --}}
-                            <img src="{{ $coverUtama ? asset('storage/' . $coverUtama->info_file) : asset('laman/img/logo_lldikti.png') }}"
-                                class="w-full h-full transition duration-700 transform group-hover:scale-105 
-                            {{ $coverUtama ? 'object-cover' : 'object-contain p-20 opacity-40' }}"
+                            <img src="{{ $utamaSrc ? $utamaSrc : asset('laman/img/logo_lldikti.png') }}"
+                                class="w-full h-full transition duration-700 transform group-hover:scale-105 {{ $utamaSrc ? 'object-cover' : 'object-contain p-20 opacity-40' }}"
                                 alt="{{ $beritaUtama->info_judul }}">
 
                             <div
@@ -167,18 +177,28 @@
                 <div class="flex flex-col space-y-5" data-aos="fade-left" data-aos-duration="1000">
                     @foreach ($beritaLainnya as $bt)
                         @php
-                            $coverSamping = $bt->details->where('info_judul_file', 'Gambar Berita')->first();
+                            $coverSamping = $bt->details->first(); // Hapus where Gambar Berita
+                            $sampingSrc = null;
+
+                            if ($coverSamping && !empty($coverSamping->info_file)) {
+                                $filename = basename($coverSamping->info_file);
+                                if (file_exists(public_path('storage/berita/' . $filename))) {
+                                    $sampingSrc = asset('storage/berita/' . $filename);
+                                } elseif (file_exists(public_path('storage/oldberita/' . $filename))) {
+                                    $sampingSrc = asset('storage/oldberita/' . $filename);
+                                } elseif (file_exists(public_path('storage/' . $coverSamping->info_file))) {
+                                    $sampingSrc = asset('storage/' . $coverSamping->info_file);
+                                }
+                            }
                         @endphp
 
                         <div onclick="window.location='{{ route('berita.show', $bt->slug) }}'"
                             class="bg-white p-5 flex items-center space-x-5 rounded-2xl shadow-sm hover:shadow-md transition cursor-pointer group border border-slate-100 relative">
 
-                            {{-- Container Gambar Kecil --}}
                             <div
                                 class="w-24 h-24 flex-shrink-0 bg-slate-50 rounded-xl overflow-hidden border border-slate-100 flex items-center justify-center">
-                                <img src="{{ $coverSamping ? asset('storage/' . $coverSamping->info_file) : asset('laman/img/logo_lldikti.png') }}"
-                                    class="w-full h-full transition duration-500 group-hover:scale-110
-                                {{ $coverSamping ? 'object-cover' : 'object-contain p-4 opacity-50' }}">
+                                <img src="{{ $sampingSrc ? $sampingSrc : asset('laman/img/logo_lldikti.png') }}"
+                                    class="w-full h-full transition duration-500 group-hover:scale-110 {{ $sampingSrc ? 'object-cover' : 'object-contain p-4 opacity-50' }}">
                             </div>
 
                             <div class="flex-1">
@@ -294,13 +314,35 @@
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[220px] relative z-10">
             @foreach ($galeriRandom as $g)
+                @php
+                    $galeriSrc = null;
+                    if (!empty($g->info_file)) {
+                        $filename = basename($g->info_file);
+                        if (file_exists(public_path('storage/berita/' . $filename))) {
+                            $galeriSrc = asset('storage/berita/' . $filename);
+                        } elseif (file_exists(public_path('storage/oldberita/' . $filename))) {
+                            $galeriSrc = asset('storage/oldberita/' . $filename);
+                        } elseif (file_exists(public_path('storage/' . $g->info_file))) {
+                            $galeriSrc = asset('storage/' . $g->info_file);
+                        }
+                    }
+                @endphp
+
                 <div data-aos="zoom-in" data-aos-delay="{{ $loop->iteration * 100 }}"
-                    class="{{ $loop->first ? 'col-span-2 row-span-2' : '' }} relative rounded-2xl overflow-hidden group shadow-lg">
-                    <img src="{{ asset('storage/' . $g->info_file) }}"
-                        class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
+                    class="{{ $loop->first ? 'col-span-2 row-span-2' : '' }} relative rounded-2xl overflow-hidden group shadow-lg bg-slate-100 flex items-center justify-center">
+
+                    @if ($galeriSrc)
+                        <img src="{{ $galeriSrc }}"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
+                    @else
+                        {{-- Fallback image jika gagal terload --}}
+                        <img src="{{ asset('laman/img/logo_lldikti.png') }}" class="w-1/2 opacity-30 object-contain">
+                    @endif
+
                     <div
                         class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-5 opacity-0 group-hover:opacity-100 transition duration-300">
-                        <h4 class="text-white font-semibold text-xs line-clamp-2">{{ $g->info->info_judul }}</h4>
+                        <h4 class="text-white font-semibold text-xs line-clamp-2">
+                            {{ $g->info->info_judul ?? 'Kegiatan LLDIKTI' }}</h4>
                     </div>
                 </div>
             @endforeach

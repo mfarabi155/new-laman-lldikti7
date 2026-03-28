@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LLDIKTI Wilayah VII - Layanan Humanis Berintegritas</title>
     <link rel="icon" href="{{ asset('laman/img/Logo-Tut-Wuri-Handayani.png') }}" type="image/png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

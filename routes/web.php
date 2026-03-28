@@ -9,6 +9,9 @@ use App\Http\Controllers\Laman\BerandaController;
 use App\Http\Controllers\Laman\PengumumanController as LamanPengumumanController;
 use App\Http\Controllers\Laman\BeritaController as LamanBeritaController;
 use App\Http\Controllers\Laman\IkmController as PublikIkm;
+use App\Http\Controllers\Laman\PeraturanController;
+use App\Http\Controllers\Laman\LayananController;
+
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\IkmController;
 use App\Http\Controllers\Admin\SurveySettingController;
@@ -58,22 +61,16 @@ Route::prefix('layanan')->group(function () {
     })->name('layanan.standar');
 });
 
-Route::get('/peraturan', function () {
-    return view('laman.peraturan.index');
-})->name('peraturan.index');
+Route::get('/peraturan', [PeraturanController::class, 'index'])->name('peraturan.index');
+
+Route::get('/layanan/standar-pelayanan', [LayananController::class, 'standar'])->name('layanan.standar');
+
 
 Route::prefix('kinerja')->group(function () {
     // UBAH BARIS INI: dari closure ke Controller
     Route::get('/rencana-strategi', [KinerjaController::class, 'renstra'])->name('kinerja.renstra');
-    
-    // Untuk halaman lain, sementara tetap seperti ini atau buatkan fungsi di KinerjaController juga
-    Route::get('/perjanjian-kinerja', function () {
-        return view('laman.kinerja.perjanjian');
-    })->name('kinerja.perjanjian');
-    
-    Route::get('/laporan-kinerja', function () {
-        return view('laman.kinerja.laporan');
-    })->name('kinerja.laporan');
+    Route::get('/perjanjian-kinerja', [KinerjaController::class, 'perjanjianKinerja'])->name('kinerja.perjanjian');
+    Route::get('/laporan-kinerja', [KinerjaController::class, 'laporanKinerja'])->name('kinerja.laporan');
     
     Route::get('/ikm', function () {
         return view('laman.kinerja.ikm');

@@ -14,6 +14,12 @@
                             <i class="fas fa-home mr-2"></i> Beranda
                         </a>
                     </li>
+                    <li>
+                        <div class="flex items-center text-slate-400">
+                            <i class="fas fa-chevron-right text-xs mx-2"></i>
+                            <span class="hover:text-secondary cursor-pointer transition">Profil</span>
+                        </div>
+                    </li>
                     <li aria-current="page">
                         <div class="flex items-center text-secondary font-bold">
                             <i class="fas fa-chevron-right text-xs mx-2 text-slate-400"></i>
@@ -37,8 +43,9 @@
 
         <div class="container mx-auto px-6 max-w-7xl relative z-10">
             
+            {{-- FORM PENCARIAN DAN FILTER --}}
             <div class="bg-white p-4 md:p-6 rounded-2xl shadow-soft border border-slate-100 mb-10" data-aos="fade-up">
-                <form action="#" method="GET" class="flex flex-col md:flex-row gap-4">
+                <form action="{{ url()->current() }}" method="GET" class="flex flex-col md:flex-row gap-4">
                     
                     <div class="w-full md:w-1/3 relative">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -46,10 +53,11 @@
                         </div>
                         <select name="kategori" class="block w-full pl-11 pr-10 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all appearance-none text-slate-700 font-medium">
                             <option value="">Semua Jenis Peraturan</option>
-                            <option value="undang-undang">Undang - Undang</option>
-                            <option value="peraturan-menteri">Peraturan Menteri</option>
-                            <option value="keputusan-menteri">Keputusan Menteri</option>
-                            <option value="surat-edaran">Surat Edaran</option>
+                            @foreach($jenisPeraturan as $jenis)
+                                <option value="{{ $jenis->peraturan_jenis_id }}" {{ request('kategori') == $jenis->peraturan_jenis_id ? 'selected' : '' }}>
+                                    {{ $jenis->peraturan_jenis }}
+                                </option>
+                            @endforeach
                         </select>
                         <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
                             <i class="fas fa-chevron-down text-slate-400 text-xs"></i>
@@ -61,7 +69,7 @@
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <i class="fas fa-search text-slate-400"></i>
                             </div>
-                            <input type="text" name="search" class="block w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all text-slate-700" placeholder="Cari Nama Peraturan... (cth: Standar Nasional)">
+                            <input type="text" name="search" value="{{ request('search') }}" class="block w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all text-slate-700" placeholder="Cari Nama/Nomor Peraturan... (cth: Standar Nasional)">
                         </div>
                         
                         <button type="submit" class="bg-secondary hover:bg-blue-800 text-white px-8 py-3.5 rounded-xl text-sm font-bold transition-all shadow-sm flex items-center gap-2 flex-shrink-0">
@@ -71,142 +79,75 @@
                 </form>
             </div>
 
+            {{-- TABEL DATA PERATURAN --}}
             <div class="bg-white rounded-3xl shadow-soft border border-slate-100 overflow-hidden" data-aos="fade-up" data-aos-delay="200">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse whitespace-nowrap md:whitespace-normal">
                         <thead>
                             <tr class="bg-primary text-white text-sm uppercase tracking-wider">
                                 <th class="px-6 py-5 font-bold w-16 text-center border-b border-primary">No</th>
-                                <th class="px-6 py-5 font-bold border-b border-primary">Nama Peraturan</th>
-                                <th class="px-6 py-5 font-bold w-56 border-b border-primary">Jenis</th>
+                                <th class="px-6 py-5 font-bold border-b border-primary">Nama / Judul Peraturan</th>
+                                <th class="px-6 py-5 font-bold w-56 border-b border-primary">Jenis Peraturan</th>
                                 <th class="px-6 py-5 font-bold w-24 text-center border-b border-primary">Aksi</th>
                             </tr>
                         </thead>
                         
                         <tbody class="text-slate-700 text-sm divide-y divide-slate-100">
-                            
-                            <tr class="hover:bg-sky-50 transition-colors duration-200 group">
-                                <td class="px-6 py-5 text-center font-medium text-slate-400">1</td>
-                                <td class="px-6 py-5 font-semibold text-primary group-hover:text-secondary transition-colors leading-relaxed">
-                                    Masa Belajar Penyelenggaraan Program Pendidikan sehubungan dengan Surat Edaran dari Menteri Pendidikan...
-                                </td>
-                                <td class="px-6 py-5">
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200 whitespace-nowrap">
-                                        Surat Edaran Sekjen
-                                    </span>
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <a href="#" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sky-100 text-secondary hover:bg-secondary hover:text-white transition-colors" title="Unduh File">
-                                        <i class="fas fa-file-pdf"></i>
-                                    </a>
-                                </td>
-                            </tr>
-
-                            <tr class="hover:bg-sky-50 transition-colors duration-200 group">
-                                <td class="px-6 py-5 text-center font-medium text-slate-400">2</td>
-                                <td class="px-6 py-5 font-semibold text-primary group-hover:text-secondary transition-colors leading-relaxed">
-                                    Pendirian, Perubahan, Pembubaran Perguruan Tinggi Negeri, dan Pendirian, Perubahan, Pencabutan Izin PTS
-                                </td>
-                                <td class="px-6 py-5">
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap">
-                                        Peraturan Menteri
-                                    </span>
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <a href="#" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sky-100 text-secondary hover:bg-secondary hover:text-white transition-colors" title="Unduh File">
-                                        <i class="fas fa-file-pdf"></i>
-                                    </a>
-                                </td>
-                            </tr>
-
-                            <tr class="hover:bg-sky-50 transition-colors duration-200 group">
-                                <td class="px-6 py-5 text-center font-medium text-slate-400">3</td>
-                                <td class="px-6 py-5 font-semibold text-primary group-hover:text-secondary transition-colors leading-relaxed">
-                                    Standar Nasional Pendidikan Tinggi
-                                </td>
-                                <td class="px-6 py-5">
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap">
-                                        Peraturan Menteri
-                                    </span>
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <a href="#" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sky-100 text-secondary hover:bg-secondary hover:text-white transition-colors" title="Unduh File">
-                                        <i class="fas fa-file-pdf"></i>
-                                    </a>
-                                </td>
-                            </tr>
-
-                            <tr class="hover:bg-sky-50 transition-colors duration-200 group">
-                                <td class="px-6 py-5 text-center font-medium text-slate-400">4</td>
-                                <td class="px-6 py-5 font-semibold text-primary group-hover:text-secondary transition-colors leading-relaxed">
-                                    Akreditasi Program Studi dan Perguruan Tinggi
-                                </td>
-                                <td class="px-6 py-5">
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap">
-                                        Peraturan Menteri
-                                    </span>
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <a href="#" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sky-100 text-secondary hover:bg-secondary hover:text-white transition-colors" title="Unduh File">
-                                        <i class="fas fa-file-pdf"></i>
-                                    </a>
-                                </td>
-                            </tr>
-
-                            <tr class="hover:bg-sky-50 transition-colors duration-200 group">
-                                <td class="px-6 py-5 text-center font-medium text-slate-400">5</td>
-                                <td class="px-6 py-5 font-semibold text-primary group-hover:text-secondary transition-colors leading-relaxed">
-                                    Tentang Standar Nasional Ilmu Pengetahuan Dan Teknologi
-                                </td>
-                                <td class="px-6 py-5">
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 whitespace-nowrap">
-                                        Undang - Undang
-                                    </span>
-                                </td>
-                                <td class="px-6 py-5 text-center">
-                                    <a href="#" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sky-100 text-secondary hover:bg-secondary hover:text-white transition-colors" title="Unduh File">
-                                        <i class="fas fa-file-pdf"></i>
-                                    </a>
-                                </td>
-                            </tr>
-
+                            @forelse($peraturan as $key => $item)
+                                <tr class="hover:bg-sky-50 transition-colors duration-200 group">
+                                    <td class="px-6 py-5 text-center font-bold text-slate-400">{{ $peraturan->firstItem() + $key }}</td>
+                                    
+                                    <td class="px-6 py-5 leading-relaxed">
+                                        {{-- Tampilkan Nomor/Tahun jika ada --}}
+                                        @if($item->peraturan_nomor || $item->peraturan_tahun)
+                                            <span class="inline-block px-2 py-1 bg-slate-100 text-slate-500 rounded text-[10px] font-bold mb-2">
+                                                {{ $item->peraturan_nomor }} {{ $item->peraturan_tahun ? 'Tahun '.$item->peraturan_tahun : '' }}
+                                            </span>
+                                            <br>
+                                        @endif
+                                        <span class="font-semibold text-primary group-hover:text-secondary transition-colors">
+                                            {{ $item->peraturan_tentang }}
+                                        </span>
+                                    </td>
+                                    
+                                    <td class="px-6 py-5">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-sky-50 text-sky-700 border border-sky-100 whitespace-nowrap">
+                                            {{ $item->jenis->peraturan_jenis ?? 'Lainnya' }}
+                                        </span>
+                                    </td>
+                                    
+                                    <td class="px-6 py-5 text-center">
+                                        {{-- Pastikan folder penyimpanan file Anda benar (contoh menggunakan folder public/storage/peraturan) --}}
+                                        @if($item->peraturan_file)
+                                            <a href="{{ asset('storage/peraturan/' . $item->peraturan_file) }}" target="_blank" class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-sky-100 text-secondary hover:bg-secondary hover:text-white transition-all shadow-sm" title="Unduh / Lihat File">
+                                                <i class="fas fa-file-pdf"></i>
+                                            </a>
+                                        @else
+                                            <span class="text-slate-300 italic text-xs">No File</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="px-6 py-16 text-center">
+                                        <i class="fas fa-folder-open text-slate-200 text-6xl mb-4 block"></i>
+                                        <p class="text-slate-500 font-medium">Data peraturan tidak ditemukan.</p>
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
                 
-                <div class="bg-slate-50 px-6 py-4 border-t border-slate-100 flex items-center justify-between sm:px-6">
-                    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                        <div>
-                            <p class="text-sm text-slate-500">
-                                Menampilkan <span class="font-medium text-primary">1</span> sampai <span class="font-medium text-primary">5</span> dari <span class="font-medium text-primary">97</span> hasil
-                            </p>
-                        </div>
-                        <div>
-                            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50">
-                                    <i class="fas fa-chevron-left"></i>
-                                </a>
-                                <a href="#" aria-current="page" class="z-10 bg-secondary border-secondary text-white relative inline-flex items-center px-4 py-2 border text-sm font-bold">
-                                    1
-                                </a>
-                                <a href="#" class="bg-white border-slate-200 text-slate-500 hover:bg-slate-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                                    2
-                                </a>
-                                <a href="#" class="bg-white border-slate-200 text-slate-500 hover:bg-slate-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                                    3
-                                </a>
-                                <span class="relative inline-flex items-center px-4 py-2 border border-slate-200 bg-white text-sm font-medium text-slate-700">
-                                    ...
-                                </span>
-                                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-slate-200 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50">
-                                    <i class="fas fa-chevron-right"></i>
-                                </a>
-                            </nav>
-                        </div>
+                {{-- PAGINASI DINAMIS --}}
+                @if($peraturan->hasPages())
+                    <div class="bg-slate-50 px-6 py-4 border-t border-slate-100">
+                        {{-- withQueryString() digunakan agar saat pindah page, parameter pencarian (search/kategori) tidak hilang --}}
+                        {{ $peraturan->withQueryString()->links('pagination::tailwind') }}
                     </div>
-                </div>
+                @endif
+                
             </div>
-
         </div>
     </section>
 

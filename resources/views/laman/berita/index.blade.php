@@ -36,17 +36,36 @@
             
             @forelse($berita as $item)
                 @php 
-                    // Ambil gambar pertama sebagai cover. Jika kosong, pakai null.
                     $cover = $item->details->first(); 
+                    $imageSrc = null;
+
+                    if ($cover && !empty($cover->info_file)) {
+                        // Mengambil nama file aslinya saja (berjaga-jaga jika isinya string path 'berita/gambar.jpg')
+                        $filename = basename($cover->info_file);
+                        
+                        // 1. Cek di lokasi baru (storage/berita)
+                        if (file_exists(public_path('storage/berita/' . $filename))) {
+                            $imageSrc = asset('storage/berita/' . $filename);
+                        } 
+                        // 2. Cek di lokasi lama (storage/oldberita)
+                        elseif (file_exists(public_path('storage/oldberita/' . $filename))) {
+                            $imageSrc = asset('storage/oldberita/' . $filename);
+                        }
+                        // 3. Fallback path default bawaan database jika dua format di atas tidak cocok
+                        elseif (file_exists(public_path('storage/' . $cover->info_file))) {
+                            $imageSrc = asset('storage/' . $cover->info_file);
+                        }
+                    }
                 @endphp
+
                 <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl border border-slate-100 transition-all duration-300 flex flex-col h-full group overflow-hidden hover:-translate-y-1" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                     
                     {{-- Area Gambar Cover --}}
                     <div class="relative h-56 md:h-64 overflow-hidden bg-slate-100">
-                        @if($cover)
-                            <img src="{{ asset('storage/' . $cover->info_file) }}" alt="{{ $item->info_judul }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out">
+                        @if($imageSrc)
+                            <img src="{{ $imageSrc }}" alt="{{ $item->info_judul }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out">
                         @else
-                            {{-- TAMPILAN JIKA TIDAK ADA GAMBAR (LOGO LLDIKTI 7) --}}
+                            {{-- TAMPILAN JIKA TIDAK ADA GAMBAR ATAU FILE FISIK TIDAK DITEMUKAN --}}
                             <div class="w-full h-full flex items-center justify-center p-8 bg-gradient-to-br from-slate-50 to-slate-200">
                                 <img src="{{ asset('laman/img/logo_lldikti.png') }}" alt="Logo LLDIKTI 7" class="w-auto h-full max-h-28 object-contain opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500">
                             </div>

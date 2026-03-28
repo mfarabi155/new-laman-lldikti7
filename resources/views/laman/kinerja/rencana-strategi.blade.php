@@ -50,6 +50,7 @@
         <div class="container mx-auto px-6 max-w-7xl relative z-10">
             <div class="flex flex-col lg:flex-row gap-10">
 
+                {{-- KOLOM KIRI: TAMPILAN PDF RENSTRA --}}
                 <div class="w-full lg:w-2/3">
 
                     <div class="bg-white rounded-3xl shadow-soft border border-slate-100 p-6 md:p-8 mb-10 group"
@@ -57,56 +58,48 @@
                         <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
                             <div>
                                 <h2 class="text-2xl font-bold text-primary mb-2">Rencana Strategis LLDIKTI VII</h2>
-                                <a href="#"
+
+                                {{-- Link Buka di Tab Baru --}}
+                                @php
+                                    $pdfUrl = asset('storage/renstra/RENSTRA_2020-2024 (Revisi) Juli 2022.pdf');
+                                @endphp
+
+                                <a href="{{ $pdfUrl }}" target="_blank"
                                     class="text-secondary font-semibold hover:text-blue-800 flex items-center text-sm md:text-base group-hover:underline">
                                     <i class="fas fa-file-pdf mr-2 text-red-500 text-lg"></i> RENCANA STRATEGIS 2020-2024
-                                    LLDIKTI WILAYAH VII (Revisi)
+                                    (Revisi)
                                 </a>
                             </div>
-                            <a href="#"
+
+                            {{-- Tombol Download Paksa --}}
+                            <a href="{{ $pdfUrl }}" download="RENSTRA_LLDIKTI_VII_2020-2024_Revisi.pdf"
                                 class="inline-flex items-center justify-center bg-sky-50 hover:bg-secondary text-secondary hover:text-white px-5 py-2.5 rounded-xl transition-colors font-bold text-sm border border-sky-100 hover:border-secondary shadow-sm flex-shrink-0">
                                 <i class="fas fa-download mr-2"></i> Unduh File
                             </a>
                         </div>
 
+                        {{-- AREA TAMPILAN (EMBED) PDF --}}
+                        {{-- AREA TAMPILAN (EMBED) PDF DENGAN GOOGLE DOCS VIEWER --}}
                         <div
-                            class="w-full bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 shadow-inner relative flex items-center justify-center h-[500px] md:h-[700px]">
-                            <div class="text-center text-slate-400 p-6">
-                                <i class="fas fa-file-pdf text-6xl mb-4 text-slate-300"></i>
-                                <p class="font-medium text-lg text-slate-500">Area Pratinjau Dokumen PDF</p>
-                                <p class="text-sm">Dokumen akan dimuat di dalam bingkai ini.</p>
-                            </div>
-                        </div>
-                    </div>
+                            class="w-full bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 shadow-inner relative flex items-center justify-center h-[600px] md:h-[800px]">
 
-                    <div class="bg-white rounded-3xl shadow-soft border border-slate-100 p-6 md:p-8 mb-10 group"
-                        data-aos="fade-up">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-                            <div>
-                                <h2 class="text-2xl font-bold text-primary mb-2">Rencana Strategis LLDIKTI VII</h2>
-                                <a href="#"
-                                    class="text-secondary font-semibold hover:text-blue-800 flex items-center text-sm md:text-base group-hover:underline">
-                                    <i class="fas fa-file-pdf mr-2 text-red-500 text-lg"></i> RENCANA STRATEGIS 2020-2024
-                                    LLDIKTI WILAYAH VII
-                                </a>
-                            </div>
-                            <a href="#"
-                                class="inline-flex items-center justify-center bg-sky-50 hover:bg-secondary text-secondary hover:text-white px-5 py-2.5 rounded-xl transition-colors font-bold text-sm border border-sky-100 hover:border-secondary shadow-sm flex-shrink-0">
-                                <i class="fas fa-download mr-2"></i> Unduh File
-                            </a>
-                        </div>
+                            {{-- Menggunakan Google Docs Viewer --}}
+                            {{-- Catatan: Agar Google Viewer berfungsi, aplikasi Laravel Anda harus sudah online (bisa diakses publik, BUKAN localhost) --}}
+                            <iframe src="https://docs.google.com/gview?url={{ urlencode($pdfUrl) }}&embedded=true"
+                                class="w-full h-full border-none" frameborder="0">
+                            </iframe>
 
-                        <div
-                            class="w-full bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 shadow-inner relative flex items-center justify-center h-[500px] md:h-[700px]">
-                            <div class="text-center text-slate-400 p-6">
-                                <i class="fas fa-file-pdf text-6xl mb-4 text-slate-300"></i>
-                                <p class="font-medium text-lg text-slate-500">Area Pratinjau Dokumen PDF</p>
-                            </div>
+                            {{-- Jika Anda masih mendevelop di LOCALHOST (127.0.0.1), gunakan fallback iframe standar ini SEMENTARA WAKTU (tapi abaikan jika IDM masih memaksa download): --}}
+                            {{-- 
+                            <iframe src="{{ $pdfUrl }}#toolbar=0" class="w-full h-full border-none"></iframe> 
+                            --}}
+
                         </div>
                     </div>
 
                 </div>
 
+                {{-- KOLOM KANAN: SIDEBAR PENGUMUMAN --}}
                 <div class="w-full lg:w-1/3">
                     <div class="sticky top-32" data-aos="fade-left" data-aos-duration="1000">
 

@@ -2,6 +2,7 @@
 
 @section('content')
 
+    {{-- HEADER SECTION --}}
     <section class="relative pt-36 pb-20 lg:pt-48 lg:pb-28 bg-sky-100 overflow-hidden border-b border-white/50">
         <div class="absolute inset-0 bg-gradient-to-b from-sky-200/50 via-sky-100 to-[#F8FAFC] z-0"></div>
         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/clouds.png')] opacity-30 bg-repeat-x scale-125 z-0 animate-[marquee_60s_linear_infinite]"></div>
@@ -38,159 +39,87 @@
         </div>
     </section>
 
+    {{-- KONTEN SECTION --}}
     <section class="py-16 md:py-24 bg-[#F8FAFC] relative overflow-hidden">
         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/clouds.png')] opacity-5 scale-125 z-0"></div>
 
         <div class="container mx-auto px-6 max-w-7xl relative z-10">
             
+            {{-- Form Pencarian --}}
             <div class="max-w-2xl mx-auto mb-16" data-aos="fade-up">
-                <div class="relative group">
+                <form action="{{ route('layanan.standar') }}" method="GET" class="relative group">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <i class="fas fa-search text-slate-400 group-focus-within:text-secondary transition-colors"></i>
                     </div>
-                    <input type="text" class="block w-full pl-11 pr-4 py-4 bg-white border border-slate-200 rounded-full text-sm shadow-soft focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all placeholder-slate-400" placeholder="Cari nama layanan... (contoh: Pangkat, Ijazah)">
-                    <button class="absolute inset-y-1.5 right-1.5 bg-secondary hover:bg-blue-800 text-white px-6 rounded-full text-sm font-semibold transition-colors shadow-sm">
+                    <input type="text" name="cari" value="{{ request('cari') }}" class="block w-full pl-11 pr-4 py-4 bg-white border border-slate-200 rounded-full text-sm shadow-soft focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all placeholder-slate-400" placeholder="Cari nama layanan... (contoh: Pangkat, Ijazah)">
+                    <button type="submit" class="absolute inset-y-1.5 right-1.5 bg-secondary hover:bg-blue-800 text-white px-6 rounded-full text-sm font-semibold transition-colors shadow-sm">
                         Cari
                     </button>
-                </div>
+                </form>
             </div>
 
+            {{-- Grid Kartu Standar Pelayanan --}}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-lg hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-1 flex flex-col group" data-aos="fade-up" data-aos-delay="100">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-sky-50 text-secondary rounded-xl flex items-center justify-center text-xl shadow-inner group-hover:bg-secondary group-hover:text-white transition-colors">
-                            <i class="fas fa-user-tie"></i>
-                        </div>
-                        <span class="text-xs font-bold text-slate-300 group-hover:text-accent transition-colors">01</span>
-                    </div>
-                    <h3 class="font-bold text-primary text-lg mb-4 flex-grow group-hover:text-secondary transition-colors">Alih Jabatan PNS Non Dosen ke PNS Dosen</h3>
-                    <a href="#" class="inline-flex items-center justify-center w-full bg-slate-50 hover:bg-sky-100 text-secondary font-semibold py-2.5 rounded-xl border border-slate-100 transition-colors text-sm">
-                        <i class="fas fa-file-download mr-2"></i> Lihat File
-                    </a>
-                </div>
+                @php
+                    // Array ikon untuk memberikan variasi visual pada kartu
+                    $icons = ['fa-user-tie', 'fa-university', 'fa-file-signature', 'fa-award', 'fa-id-card', 'fa-id-badge', 'fa-wallet', 'fa-level-up-alt', 'fa-certificate', 'fa-hand-holding-usd'];
+                @endphp
 
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-lg hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-1 flex flex-col group" data-aos="fade-up" data-aos-delay="150">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-sky-50 text-secondary rounded-xl flex items-center justify-center text-xl shadow-inner group-hover:bg-secondary group-hover:text-white transition-colors">
-                            <i class="fas fa-university"></i>
-                        </div>
-                        <span class="text-xs font-bold text-slate-300 group-hover:text-accent transition-colors">02</span>
-                    </div>
-                    <h3 class="font-bold text-primary text-lg mb-4 flex-grow group-hover:text-secondary transition-colors">Alih Kelola Perguruan Tinggi Swasta</h3>
-                    <a href="#" class="inline-flex items-center justify-center w-full bg-slate-50 hover:bg-sky-100 text-secondary font-semibold py-2.5 rounded-xl border border-slate-100 transition-colors text-sm">
-                        <i class="fas fa-file-download mr-2"></i> Lihat File
-                    </a>
-                </div>
+                @forelse($standar as $key => $item)
+                    @php
+                        // Memilih ikon secara berputar (loop)
+                        $iconClass = $icons[$loop->index % count($icons)];
+                        // Membuat format penomoran berlanjut antar halaman (01, 02, dst)
+                        $nomorUrut = str_pad($standar->firstItem() + $key, 2, '0', STR_PAD_LEFT);
+                    @endphp
 
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-lg hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-1 flex flex-col group" data-aos="fade-up" data-aos-delay="200">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-sky-50 text-secondary rounded-xl flex items-center justify-center text-xl shadow-inner group-hover:bg-secondary group-hover:text-white transition-colors">
-                            <i class="fas fa-file-signature"></i>
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-lg hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-1 flex flex-col group" data-aos="fade-up" data-aos-delay="{{ ($loop->index % 3) * 50 }}">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="w-12 h-12 bg-sky-50 text-secondary rounded-xl flex items-center justify-center text-xl shadow-inner group-hover:bg-secondary group-hover:text-white transition-colors">
+                                <i class="fas {{ $iconClass }}"></i>
+                            </div>
+                            <span class="text-xs font-bold text-slate-300 group-hover:text-accent transition-colors">{{ $nomorUrut }}</span>
                         </div>
-                        <span class="text-xs font-bold text-slate-300 group-hover:text-accent transition-colors">03</span>
+                        
+                        <h3 class="font-bold text-primary text-lg mb-4 flex-grow group-hover:text-secondary transition-colors line-clamp-3">
+                            {{ $item->sp_uraian }}
+                        </h3>
+                        
+                        {{-- Logika jika link Google Drive ada atau kosong --}}
+                        @if($item->sp_link)
+                            <a href="{{ $item->sp_link }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-full bg-slate-50 hover:bg-sky-100 text-secondary font-semibold py-2.5 rounded-xl border border-slate-100 transition-colors text-sm">
+                                <i class="fas fa-external-link-alt mr-2"></i> Buka Tautan
+                            </a>
+                        @else
+                            <button disabled class="inline-flex items-center justify-center w-full bg-slate-50 text-slate-400 font-semibold py-2.5 rounded-xl border border-slate-100 text-sm cursor-not-allowed opacity-70">
+                                <i class="fas fa-times-circle mr-2"></i> Tautan Kosong
+                            </button>
+                        @endif
                     </div>
-                    <h3 class="font-bold text-primary text-lg mb-4 flex-grow group-hover:text-secondary transition-colors">Cetak Transkrip Ujian Negara</h3>
-                    <a href="#" class="inline-flex items-center justify-center w-full bg-slate-50 hover:bg-sky-100 text-secondary font-semibold py-2.5 rounded-xl border border-slate-100 transition-colors text-sm">
-                        <i class="fas fa-file-download mr-2"></i> Lihat File
-                    </a>
-                </div>
-
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-lg hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-1 flex flex-col group" data-aos="fade-up" data-aos-delay="250">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-sky-50 text-secondary rounded-xl flex items-center justify-center text-xl shadow-inner group-hover:bg-secondary group-hover:text-white transition-colors">
-                            <i class="fas fa-award"></i>
-                        </div>
-                        <span class="text-xs font-bold text-slate-300 group-hover:text-accent transition-colors">04</span>
+                @empty
+                    <div class="col-span-1 md:col-span-2 lg:col-span-3 text-center py-16">
+                        <i class="fas fa-folder-open text-slate-200 text-6xl mb-4 block"></i>
+                        <p class="text-slate-500 font-medium">Standar layanan tidak ditemukan.</p>
+                        @if(request('cari'))
+                            <a href="{{ route('layanan.standar') }}" class="inline-block mt-4 text-secondary font-semibold hover:underline">Tampilkan Semua Layanan</a>
+                        @endif
                     </div>
-                    <h3 class="font-bold text-primary text-lg mb-4 flex-grow group-hover:text-secondary transition-colors">Inpassing Kepangkatan Non PNS (Asisten Ahli & Lektor)</h3>
-                    <a href="#" class="inline-flex items-center justify-center w-full bg-slate-50 hover:bg-sky-100 text-secondary font-semibold py-2.5 rounded-xl border border-slate-100 transition-colors text-sm">
-                        <i class="fas fa-file-download mr-2"></i> Lihat File
-                    </a>
-                </div>
-
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-lg hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-1 flex flex-col group" data-aos="fade-up" data-aos-delay="300">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-sky-50 text-secondary rounded-xl flex items-center justify-center text-xl shadow-inner group-hover:bg-secondary group-hover:text-white transition-colors">
-                            <i class="fas fa-id-card"></i>
-                        </div>
-                        <span class="text-xs font-bold text-slate-300 group-hover:text-accent transition-colors">05</span>
-                    </div>
-                    <h3 class="font-bold text-primary text-lg mb-4 flex-grow group-hover:text-secondary transition-colors">Kartu Istri / Suami (KARIS / KARSU)</h3>
-                    <a href="#" class="inline-flex items-center justify-center w-full bg-slate-50 hover:bg-sky-100 text-secondary font-semibold py-2.5 rounded-xl border border-slate-100 transition-colors text-sm">
-                        <i class="fas fa-file-download mr-2"></i> Lihat File
-                    </a>
-                </div>
-
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-lg hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-1 flex flex-col group" data-aos="fade-up" data-aos-delay="350">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-sky-50 text-secondary rounded-xl flex items-center justify-center text-xl shadow-inner group-hover:bg-secondary group-hover:text-white transition-colors">
-                            <i class="fas fa-id-badge"></i>
-                        </div>
-                        <span class="text-xs font-bold text-slate-300 group-hover:text-accent transition-colors">06</span>
-                    </div>
-                    <h3 class="font-bold text-primary text-lg mb-4 flex-grow group-hover:text-secondary transition-colors">Kartu Pegawai Hilang</h3>
-                    <a href="#" class="inline-flex items-center justify-center w-full bg-slate-50 hover:bg-sky-100 text-secondary font-semibold py-2.5 rounded-xl border border-slate-100 transition-colors text-sm">
-                        <i class="fas fa-file-download mr-2"></i> Lihat File
-                    </a>
-                </div>
-
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-lg hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-1 flex flex-col group" data-aos="fade-up" data-aos-delay="400">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-sky-50 text-secondary rounded-xl flex items-center justify-center text-xl shadow-inner group-hover:bg-secondary group-hover:text-white transition-colors">
-                            <i class="fas fa-wallet"></i>
-                        </div>
-                        <span class="text-xs font-bold text-slate-300 group-hover:text-accent transition-colors">07</span>
-                    </div>
-                    <h3 class="font-bold text-primary text-lg mb-4 flex-grow group-hover:text-secondary transition-colors">Kartu TASPEN</h3>
-                    <a href="#" class="inline-flex items-center justify-center w-full bg-slate-50 hover:bg-sky-100 text-secondary font-semibold py-2.5 rounded-xl border border-slate-100 transition-colors text-sm">
-                        <i class="fas fa-file-download mr-2"></i> Lihat File
-                    </a>
-                </div>
-
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-lg hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-1 flex flex-col group" data-aos="fade-up" data-aos-delay="450">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-sky-50 text-secondary rounded-xl flex items-center justify-center text-xl shadow-inner group-hover:bg-secondary group-hover:text-white transition-colors">
-                            <i class="fas fa-level-up-alt"></i>
-                        </div>
-                        <span class="text-xs font-bold text-slate-300 group-hover:text-accent transition-colors">08</span>
-                    </div>
-                    <h3 class="font-bold text-primary text-lg mb-4 flex-grow group-hover:text-secondary transition-colors">Kenaikan Pangkat Penyetaraan Non PNS</h3>
-                    <a href="#" class="inline-flex items-center justify-center w-full bg-slate-50 hover:bg-sky-100 text-secondary font-semibold py-2.5 rounded-xl border border-slate-100 transition-colors text-sm">
-                        <i class="fas fa-file-download mr-2"></i> Lihat File
-                    </a>
-                </div>
-
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-lg hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-1 flex flex-col group" data-aos="fade-up" data-aos-delay="500">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-sky-50 text-secondary rounded-xl flex items-center justify-center text-xl shadow-inner group-hover:bg-secondary group-hover:text-white transition-colors">
-                            <i class="fas fa-certificate"></i>
-                        </div>
-                        <span class="text-xs font-bold text-slate-300 group-hover:text-accent transition-colors">09</span>
-                    </div>
-                    <h3 class="font-bold text-primary text-lg mb-4 flex-grow group-hover:text-secondary transition-colors">Klarifikasi Ijazah</h3>
-                    <a href="#" class="inline-flex items-center justify-center w-full bg-slate-50 hover:bg-sky-100 text-secondary font-semibold py-2.5 rounded-xl border border-slate-100 transition-colors text-sm">
-                        <i class="fas fa-file-download mr-2"></i> Lihat File
-                    </a>
-                </div>
-
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-lg hover:border-sky-200 transition-all duration-300 transform hover:-translate-y-1 flex flex-col group" data-aos="fade-up" data-aos-delay="550">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-sky-50 text-secondary rounded-xl flex items-center justify-center text-xl shadow-inner group-hover:bg-secondary group-hover:text-white transition-colors">
-                            <i class="fas fa-hand-holding-usd"></i>
-                        </div>
-                        <span class="text-xs font-bold text-slate-300 group-hover:text-accent transition-colors">10</span>
-                    </div>
-                    <h3 class="font-bold text-primary text-lg mb-4 flex-grow group-hover:text-secondary transition-colors">Laporan Beasiswa PPA & BBP-PPA</h3>
-                    <a href="#" class="inline-flex items-center justify-center w-full bg-slate-50 hover:bg-sky-100 text-secondary font-semibold py-2.5 rounded-xl border border-slate-100 transition-colors text-sm">
-                        <i class="fas fa-file-download mr-2"></i> Lihat File
-                    </a>
-                </div>
+                @endforelse
 
             </div>
             
-            <div class="mt-12 text-center" data-aos="fade-up">
-                <p class="text-slate-400 text-sm mb-4">Menampilkan 10 standar layanan</p>
+            {{-- Paginasi --}}
+            @if($standar->hasPages())
+                <div class="mt-12 flex justify-center" data-aos="fade-up">
+                    <div class="bg-white px-4 py-3 rounded-xl shadow-sm border border-slate-100 inline-block">
+                        {{ $standar->links('pagination::tailwind') }}
+                    </div>
+                </div>
+            @endif
+
+            <div class="mt-8 text-center" data-aos="fade-up">
+                <p class="text-slate-400 text-sm mb-4">Menampilkan total {{ $standar->total() }} standar layanan</p>
             </div>
 
         </div>

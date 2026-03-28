@@ -105,7 +105,7 @@
 
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md hover:border-sky-200 transition-all duration-300 group" data-aos="fade-up" data-aos-delay="400">
                     <div class="w-12 h-12 bg-sky-50 text-secondary rounded-xl flex items-center justify-center mb-5 text-xl group-hover:bg-secondary group-hover:text-white transition-colors shadow-inner">
-                        <i class="fas fa-shield-check"></i>
+                        <i class="fas fa-award"></i>
                     </div>
                     <p class="text-primary font-semibold leading-snug">Melaksanakan fasilitasi kesiapan perguruan tinggi dalam penjaminan mutu eksternal.</p>
                 </div>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Laman;
 
 use App\Http\Controllers\Controller;
 use App\Models\Info;
+use App\Models\PerjanjianKinerja;
+use App\Models\LaporanKinerja;
 
 class KinerjaController extends Controller
 {
@@ -18,6 +20,22 @@ class KinerjaController extends Controller
             ->get();
 
         return view('laman.kinerja.rencana-strategi', compact('pengumumanTerkini'));
+    }
+
+    public function perjanjianKinerja()
+    {
+        // Ambil data perjanjian kinerja, urutkan dari tahun terbaru ke terlama
+        $perjanjian = PerjanjianKinerja::orderBy('pk_tahun', 'desc')->get();
+
+        return view('laman.kinerja.perjanjian', compact('perjanjian'));
+    }
+
+    public function laporanKinerja()
+    {
+        // Ambil data Laporan Kinerja, urutkan dari tahun terbaru
+        $laporan = LaporanKinerja::orderBy('lakin_tahun', 'desc')->get();
+
+        return view('laman.kinerja.laporan', compact('laporan'));
     }
 
 }

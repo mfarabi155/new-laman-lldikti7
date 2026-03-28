@@ -50,10 +50,24 @@
                             $galeriLainnya = $berita->details->skip(1);
                         @endphp
 
-                        {{-- Gambar Cover Utama (Satu Gambar Paling Besar) --}}
-                        @if ($gambarUtama)
+                        {{-- PENGECEKAN GAMBAR COVER UTAMA --}}
+                        @php
+                            $mainImageSrc = null;
+                            if ($gambarUtama && !empty($gambarUtama->info_file)) {
+                                $filename = basename($gambarUtama->info_file);
+                                if (file_exists(public_path('storage/berita/' . $filename))) {
+                                    $mainImageSrc = asset('storage/berita/' . $filename);
+                                } elseif (file_exists(public_path('storage/oldberita/' . $filename))) {
+                                    $mainImageSrc = asset('storage/oldberita/' . $filename);
+                                } elseif (file_exists(public_path('storage/' . $gambarUtama->info_file))) {
+                                    $mainImageSrc = asset('storage/' . $gambarUtama->info_file);
+                                }
+                            }
+                        @endphp
+
+                        @if ($mainImageSrc)
                             <div class="w-full relative bg-slate-100 flex justify-center border-b border-slate-50">
-                                <img src="{{ asset('storage/' . $gambarUtama->info_file) }}" alt="Cover Artikel"
+                                <img src="{{ $mainImageSrc }}" alt="Cover Artikel"
                                     class="w-full h-auto max-h-[500px] object-contain">
                             </div>
                         @endif
@@ -91,20 +105,34 @@
                                     <i class="fas fa-images text-argon-blue"></i> Galeri Kegiatan
                                 </h3>
 
-                                {{-- Grid Dinamis menyesuaikan jumlah gambar --}}
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                     @foreach ($galeriLainnya as $foto)
-                                        <a href="{{ asset('storage/' . $foto->info_file) }}" target="_blank"
-                                            class="group block overflow-hidden rounded-xl border border-slate-200 shadow-sm relative h-48 cursor-zoom-in">
-                                            <img src="{{ asset('storage/' . $foto->info_file) }}"
-                                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                                alt="Galeri Berita">
-                                            <div
-                                                class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                                                <i
-                                                    class="fas fa-expand text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity scale-50 group-hover:scale-100 duration-300"></i>
-                                            </div>
-                                        </a>
+                                        {{-- PENGECEKAN GAMBAR GALERI --}}
+                                        @php
+                                            $gallerySrc = null;
+                                            if (!empty($foto->info_file)) {
+                                                $filename = basename($foto->info_file);
+                                                if (file_exists(public_path('storage/berita/' . $filename))) {
+                                                    $gallerySrc = asset('storage/berita/' . $filename);
+                                                } elseif (file_exists(public_path('storage/oldberita/' . $filename))) {
+                                                    $gallerySrc = asset('storage/oldberita/' . $filename);
+                                                } elseif (file_exists(public_path('storage/' . $foto->info_file))) {
+                                                    $gallerySrc = asset('storage/' . $foto->info_file);
+                                                }
+                                            }
+                                        @endphp
+
+                                        @if($gallerySrc)
+                                            <a href="{{ $gallerySrc }}" target="_blank"
+                                                class="group block overflow-hidden rounded-xl border border-slate-200 shadow-sm relative h-48 cursor-zoom-in">
+                                                <img src="{{ $gallerySrc }}"
+                                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                                    alt="Galeri Berita">
+                                                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                                                    <i class="fas fa-expand text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity scale-50 group-hover:scale-100 duration-300"></i>
+                                                </div>
+                                            </a>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>
@@ -124,13 +152,28 @@
 
                         <div class="space-y-6">
                             @forelse($beritaTerbaru as $terbaru)
-                                @php $coverSidebar = $terbaru->details->first(); @endphp
+                                @php 
+                                    $coverSidebar = $terbaru->details->first(); 
+                                    $sidebarSrc = null;
+
+                                    // PENGECEKAN GAMBAR SIDEBAR
+                                    if ($coverSidebar && !empty($coverSidebar->info_file)) {
+                                        $filename = basename($coverSidebar->info_file);
+                                        if (file_exists(public_path('storage/berita/' . $filename))) {
+                                            $sidebarSrc = asset('storage/berita/' . $filename);
+                                        } elseif (file_exists(public_path('storage/oldberita/' . $filename))) {
+                                            $sidebarSrc = asset('storage/oldberita/' . $filename);
+                                        } elseif (file_exists(public_path('storage/' . $coverSidebar->info_file))) {
+                                            $sidebarSrc = asset('storage/' . $coverSidebar->info_file);
+                                        }
+                                    }
+                                @endphp
+                                
                                 <a href="{{ route('berita.show', $terbaru->slug) }}" class="group flex gap-4 items-start">
                                     {{-- Thumbnail Kotak --}}
-                                    <div
-                                        class="w-20 h-20 shrink-0 rounded-xl overflow-hidden bg-slate-100 border border-slate-100">
-                                        @if ($coverSidebar)
-                                            <img src="{{ asset('storage/' . $coverSidebar->info_file) }}"
+                                    <div class="w-20 h-20 shrink-0 rounded-xl overflow-hidden bg-slate-100 border border-slate-100">
+                                        @if ($sidebarSrc)
+                                            <img src="{{ $sidebarSrc }}"
                                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                                 alt="">
                                         @else
@@ -142,8 +185,7 @@
                                         @endif
                                     </div>
                                     <div class="flex-1">
-                                        <h4
-                                            class="font-bold text-sm text-slate-700 leading-snug group-hover:text-argon-blue transition-colors mb-2 line-clamp-2">
+                                        <h4 class="font-bold text-sm text-slate-700 leading-snug group-hover:text-argon-blue transition-colors mb-2 line-clamp-2">
                                             {{ $terbaru->info_judul }}
                                         </h4>
                                         <span class="text-xs text-slate-400 flex items-center gap-1"><i
@@ -158,9 +200,7 @@
                     </div>
 
                     {{-- Widget Opsional LLDikti --}}
-                    <div
-                        class="bg-gradient-to-br from-blue-800 to-blue-500 rounded-2xl shadow-md p-6 text-white text-center">
-                        {{-- Hapus brightness-0 dan invert di sini --}}
+                    <div class="bg-gradient-to-br from-blue-800 to-blue-500 rounded-2xl shadow-md p-6 text-white text-center">
                         <img src="{{ asset('laman/img/Logo-Tut-Wuri-Handayani.png') }}"
                             class="h-16 w-auto mx-auto mb-4 object-contain" alt="Tut Wuri">
 
