@@ -45,6 +45,7 @@
         <div class="container mx-auto px-6 relative z-10">
             <div class="flex flex-col lg:flex-row gap-16 items-start">
                 
+                {{-- SIDEBAR KIRI: FOTO KEPALA LEMBAGA --}}
                 <div class="w-full lg:w-1/3" data-aos="fade-right" data-aos-duration="1200">
                     <div class="sticky top-32">
                         <div class="bg-white p-4 rounded-3xl shadow-soft border border-slate-100 relative group overflow-hidden">
@@ -72,14 +73,13 @@
                     </div>
                 </div>
 
+                {{-- KONTEN KANAN: TEKS SAMBUTAN --}}
                 <div class="w-full lg:w-2/3" data-aos="fade-up" data-aos-duration="1200" data-aos-delay="200">
                     <div class="bg-white p-10 md:p-14 rounded-3xl shadow-soft border border-slate-100 relative">
                         <i class="fas fa-quote-left absolute text-sky-100 text-8xl -top-4 -left-4 -z-10 transform -rotate-12"></i>
                         
-                        {{-- MENGGUNAKAN text-justify DAN leading-relaxed UNTUK KERAPIAN --}}
                         <div class="prose prose-lg max-w-none text-slate-700 leading-relaxed text-justify">
                             
-                            {{-- SAPAAN AWAL DIRAPIKAN DENGAN BORDER BAWAH --}}
                             <div class="border-b border-slate-100 pb-6 mb-8">
                                 <h2 class="text-2xl md:text-3xl font-extrabold text-primary leading-snug">
                                     Assalamu'alaikum Warahmatullahi Wabarakatuh, <br>
@@ -100,23 +100,23 @@
                             </p>
 
                             <blockquote class="my-10 p-6 md:p-8 bg-sky-50/80 border-l-4 border-accent rounded-r-2xl shadow-sm text-primary font-medium italic text-xl leading-relaxed text-left">
-                                "LLDIKTI Wilayah VII menyadari bahwa Perguruan Tinggi memiliki potensi yang apabila digali dan dikelola dengan baik dan benar akan mampu memberikan kontribusi yang sangat positif dalam <span class="text-secondary font-bold">mencerdaskan kehidupan bangsa.</span>"
+                                "LLDIKTI Wilayah VII menyadari penuh bahwa <span class="text-secondary font-bold underline decoration-accent decoration-4 underline-offset-4">Perguruan Tinggi Punya Peran Strategis</span>. Potensi besar ini, apabila digali dan dikelola dengan baik dan benar, akan mampu memberikan kontribusi yang sangat positif dalam mencerdaskan kehidupan bangsa."
                             </blockquote>
 
                             <p>
-                                Oleh karena itu, kami sangat berharap, melalui laman web ini, komunikasi antara LLDIKTI Wilayah VII dan perguruan tinggi dapat berjalan lebih cepat dan lancar.
+                                Oleh karena itu, kami sangat berharap, melalui laman web ini, komunikasi antara LLDIKTI Wilayah VII dan perguruan tinggi dapat berjalan lebih cepat dan lancar untuk mewujudkan visi dan misi pendidikan tinggi yang lebih baik.
                             </p>
 
                             <p>
-                                Laman web LLDIKTI Wilayah VII merupakan wahana yang dapat digunakan sebagai media penyebarluasan informasi-informasi baik dari Kementerian Riset, Teknologi, dan Pendidikan Tinggi maupun perguruan tinggi, yang memang harus diketahui oleh pemangku kepentingan secara luas. Dalam laman web LLDIKTI Wilayah VII ini antara lain memuat jurnal elektronik, pengumuman, peraturan, dan tautan ke layanan-layanan pendidikan tinggi.
+                                Laman web LLDIKTI Wilayah VII merupakan wahana yang dapat digunakan sebagai media penyebarluasan informasi-informasi baik dari Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi maupun dari internal perguruan tinggi, yang memang harus diketahui oleh pemangku kepentingan secara luas. Dalam laman web ini, antara lain memuat jurnal elektronik, pengumuman, peraturan, dan tautan ke layanan-layanan pendidikan tinggi.
                             </p>
 
                             <p>
-                                Kami menyadari bahwa masih banyak kekurangan pada laman web LLDIKTI Wilayah VII ini, oleh karenanya, laman web akan terus dikembangkan, sehingga tampilan, isi, dan mutunya menjadi lebih baik lagi dan akuntabel. Untuk itu, pengunjung laman web LLDIKTI Wilayah VII yang kami hormati, kami mengharapkan saran dan komentar yang berkesinambungan guna menunjang peningkatan pelayanan dan informasi yang dibutuhkan bersama. Saran dan komentar dapat disampaikan melalui akses buku tamu dan surat elektronik ke <a href="mailto:ult.lldikti7@kemdikbud.go.id" class="text-secondary hover:text-primary transition-colors hover:underline font-semibold">ult.lldikti7@kemdikbud.go.id</a>.
+                                Kami menyadari bahwa masih banyak kekurangan pada laman web LLDIKTI Wilayah VII ini. Oleh karenanya, laman web akan terus dikembangkan sehingga tampilan, isi, dan mutunya menjadi lebih baik lagi dan akuntabel. Untuk itu, pengunjung laman web yang kami hormati, kami sangat mengharapkan saran dan komentar yang berkesinambungan guna menunjang peningkatan pelayanan dan informasi yang dibutuhkan bersama. Saran dan komentar dapat disampaikan melalui akses buku tamu dan surat elektronik ke <a href="mailto:ult.lldikti7@kemdikbud.go.id" class="text-secondary hover:text-primary transition-colors hover:underline font-semibold">ult.lldikti7@kemdikbud.go.id</a>.
                             </p>
 
                             <p>
-                                Akhirnya kami mengucapkan terima kasih atas kepercayaan para pengunjung dalam menggunakan laman web ini sebagai rujukan layanan pendidikan tinggi sampai saat ini. Semoga dengan transformasi laman web ini dapat meningkatkan layanan pendidikan tinggi dan memberikan manfaat yang lebih besar kepada masyarakat.
+                                Akhir kata, kami mengucapkan terima kasih atas kepercayaan para pengunjung yang terus menggunakan laman web ini sebagai rujukan utama layanan pendidikan tinggi. Semoga transformasi digital melalui laman web ini dapat meningkatkan efisiensi layanan dan memberikan manfaat yang lebih besar kepada masyarakat luas.
                             </p>
 
                             <p class="font-bold text-primary mt-10 text-xl text-left">
