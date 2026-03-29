@@ -11,7 +11,7 @@
         </h3>
     </div>
 
-    <form action="{{ isset($pengumuman) ? url('k0p3rt1s4dm1n/pengumuman/'.$pengumuman->info_id) : url('k0p3rt1s4dm1n/pengumuman') }}" method="POST">
+    <form action="{{ isset($pengumuman) ? url('pangkalan/pengumuman/'.$pengumuman->info_id) : url('pangkalan/pengumuman') }}" method="POST">
         @csrf
         @if(isset($pengumuman)) @method('PUT') @endif
 
@@ -74,7 +74,7 @@
         </div>
 
         <div class="flex justify-end gap-3">
-            <a href="{{ url('k0p3rt1s4dm1n/pengumuman') }}" class="px-6 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300">Batal</a>
+            <a href="{{ url('pangkalan/pengumuman') }}" class="px-6 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300">Batal</a>
             <button type="submit" class="px-6 py-2 bg-argon-blue text-white font-bold rounded-lg hover:bg-blue-700">Simpan Pengumuman</button>
         </div>
     </form>

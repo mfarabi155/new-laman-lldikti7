@@ -19,7 +19,7 @@
 
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 relative z-10">
         <h2 class="text-2xl font-bold text-white tracking-wide">Daftar Pengguna</h2>
-        <a href="{{ url('k0p3rt1s4dm1n/pengguna/tambah') }}" class="bg-white text-argon-blue hover:bg-slate-50 hover:shadow-lg font-bold py-2.5 px-5 rounded-lg shadow-sm transition-all duration-200 flex items-center gap-2 text-sm transform hover:-translate-y-0.5">
+        <a href="{{ url('pangkalan/pengguna/tambah') }}" class="bg-white text-argon-blue hover:bg-slate-50 hover:shadow-lg font-bold py-2.5 px-5 rounded-lg shadow-sm transition-all duration-200 flex items-center gap-2 text-sm transform hover:-translate-y-0.5">
             <i class="fas fa-plus"></i> Tambah Pengguna
         </a>
     </div>
@@ -27,7 +27,7 @@
     <div class="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden relative z-10">
         
         <div class="p-6 border-b border-slate-100 bg-white">
-            <form action="{{ url('k0p3rt1s4dm1n/pengguna') }}" method="GET" class="flex gap-2 w-full md:w-1/3 lg:w-1/4">
+            <form action="{{ url('pangkalan/pengguna') }}" method="GET" class="flex gap-2 w-full md:w-1/3 lg:w-1/4">
                 <input type="text" name="search" value="{{ request('search') }}" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-sm px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-argon-blue focus:bg-white transition-all text-slate-700" placeholder="Cari Username...">
                 <button type="submit" class="bg-argon-blue hover:bg-argon-indigo text-white px-4 py-2.5 rounded-lg transition-colors shadow-sm flex-shrink-0">
                     <i class="fas fa-search"></i>
@@ -112,12 +112,12 @@
                             <td class="px-6 py-4 text-center">
                                 <div class="flex items-center justify-center gap-2">
                                     {{-- Tombol Edit --}}
-                                    <a href="{{ url('k0p3rt1s4dm1n/pengguna/' . $user->t_user_id . '/edit') }}" class="w-8 h-8 rounded bg-orange-400 hover:bg-orange-500 text-white flex items-center justify-center transition-colors shadow-sm" title="Edit">
+                                    <a href="{{ url('pangkalan/pengguna/' . $user->t_user_id . '/edit') }}" class="w-8 h-8 rounded bg-orange-400 hover:bg-orange-500 text-white flex items-center justify-center transition-colors shadow-sm" title="Edit">
                                         <i class="fas fa-pen text-xs"></i>
                                     </a>
                                     
                                     {{-- Tombol Toggle Disable/Enable (Menggunakan Form karena merubah data) --}}
-                                    <form action="{{ url('k0p3rt1s4dm1n/pengguna/' . $user->t_user_id . '/disable') }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin mengubah status pengguna ini?');">
+                                    <form action="{{ url('pangkalan/pengguna/' . $user->t_user_id . '/disable') }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin mengubah status pengguna ini?');">
                                         @csrf
                                         <button type="submit" class="w-8 h-8 rounded {{ $user->t_user_status == 1 ? 'bg-red-400 hover:bg-red-500' : 'bg-emerald-400 hover:bg-emerald-500' }} text-white flex items-center justify-center transition-colors shadow-sm" title="{{ $user->t_user_status == 1 ? 'Nonaktifkan' : 'Aktifkan' }}">
                                             <i class="fas {{ $user->t_user_status == 1 ? 'fa-eye-slash' : 'fa-eye' }} text-xs"></i>

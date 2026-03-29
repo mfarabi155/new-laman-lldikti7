@@ -65,7 +65,7 @@ class PenggunaController extends Controller
             't_user_created_by'   => Auth::check() ? Auth::user()->t_user_username : 'System',
         ]);
 
-        return redirect('/k0p3rt1s4dm1n/pengguna')->with('success', 'Pengguna baru berhasil ditambahkan!');
+        return redirect('/pangkalan/pengguna')->with('success', 'Pengguna baru berhasil ditambahkan!');
     }
 
     /**
@@ -109,7 +109,7 @@ class PenggunaController extends Controller
 
         $user->save();
 
-        return redirect('/k0p3rt1s4dm1n/pengguna')->with('success', 'Data pengguna berhasil diperbarui!');
+        return redirect('/pangkalan/pengguna')->with('success', 'Data pengguna berhasil diperbarui!');
     }
 
     /**
@@ -129,6 +129,6 @@ class PenggunaController extends Controller
         $user->save();
 
         $pesan = $newStatus == 1 ? 'diaktifkan kembali!' : 'dinonaktifkan!';
-        return redirect('/k0p3rt1s4dm1n/pengguna')->with('success', 'Status pengguna berhasil ' . $pesan);
+        return redirect('/pangkalan/pengguna')->with('success', 'Status pengguna berhasil ' . $pesan);
     }
 }

@@ -88,7 +88,7 @@ Route::post('/form-ikm', [PublikIkm::class, 'store'])->name('ikm.store');
 // ==========================================
 // AREA ADMIN
 // ==========================================
-Route::prefix('k0p3rt1s4dm1n')->group(function () {
+Route::prefix('pangkalan')->group(function () {
 
     Route::get('/', function () {
         if (session()->has('admin_logged_in')) {

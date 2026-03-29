@@ -20,7 +20,7 @@
     {{-- Header Judul & Tombol Tambah --}}
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 relative z-10">
         <h2 class="text-2xl font-bold text-white tracking-wide">Daftar Pengumuman</h2>
-        <a href="{{ url('k0p3rt1s4dm1n/pengumuman/tambah') }}" class="bg-white text-argon-blue hover:bg-slate-50 hover:shadow-lg font-bold py-2.5 px-5 rounded-lg shadow-sm transition-all duration-200 flex items-center gap-2 text-sm transform hover:-translate-y-0.5">
+        <a href="{{ url('pangkalan/pengumuman/tambah') }}" class="bg-white text-argon-blue hover:bg-slate-50 hover:shadow-lg font-bold py-2.5 px-5 rounded-lg shadow-sm transition-all duration-200 flex items-center gap-2 text-sm transform hover:-translate-y-0.5">
             <i class="fas fa-plus"></i> Tambah Pengumuman
         </a>
     </div>
@@ -30,7 +30,7 @@
         
         {{-- Area Filter Pencarian (Sesuai Desain UI Anda) --}}
         <div class="p-6 border-b border-slate-100 bg-white">
-            <form action="{{ url('k0p3rt1s4dm1n/pengumuman') }}" method="GET" class="flex flex-wrap gap-3 items-end">
+            <form action="{{ url('pangkalan/pengumuman') }}" method="GET" class="flex flex-wrap gap-3 items-end">
                 
                 <div class="flex-1 min-w-[150px]">
                     <div class="relative">

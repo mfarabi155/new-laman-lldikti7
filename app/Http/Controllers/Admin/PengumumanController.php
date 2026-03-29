@@ -59,7 +59,7 @@ class PengumumanController extends Controller
         // Simpan Lampiran Berkas (Jika ada)
         $this->simpanLampiran($request, $infoId);
 
-        return redirect('k0p3rt1s4dm1n/pengumuman')->with('success', 'Pengumuman berhasil ditambahkan!');
+        return redirect('pangkalan/pengumuman')->with('success', 'Pengumuman berhasil ditambahkan!');
     }
 
     // 4. Menampilkan Form Edit
