@@ -83,18 +83,26 @@
                                     class="fas fa-headphones-alt mr-2 text-accent"></i> Dengarkan Sambutan</h4>
                             <p class="text-xs text-slate-400 mb-5" id="tts-status">Audio siap diputar.</p>
 
-                            <div class="flex justify-center items-center gap-4">
-                                {{-- Tombol Play/Pause --}}
-                                <button id="btn-tts-play"
-                                    class="w-14 h-14 rounded-full bg-[#02275d] text-white flex items-center justify-center hover:bg-blue-900 transition-all shadow-md transform hover:scale-105 focus:outline-none">
-                                    <i class="fas fa-play text-xl ml-1" id="icon-tts-play"></i>
-                                </button>
-
+                            <div class="flex justify-center items-center gap-4 relative">
+                                
                                 {{-- Tombol Stop (Sembunyi by default) --}}
                                 <button id="btn-tts-stop"
                                     class="w-10 h-10 rounded-full bg-red-100 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all shadow-sm focus:outline-none hidden">
                                     <i class="fas fa-stop"></i>
                                 </button>
+
+                                {{-- Tombol Play/Pause --}}
+                                <button id="btn-tts-play"
+                                    class="w-14 h-14 rounded-full bg-[#02275d] text-white flex items-center justify-center hover:bg-blue-900 transition-all shadow-md transform hover:scale-105 focus:outline-none z-10">
+                                    <i class="fas fa-play text-xl ml-1" id="icon-tts-play"></i>
+                                </button>
+
+                                {{-- FITUR BARU: Tombol Speed (Kecepatan) --}}
+                                <button id="btn-tts-speed" title="Ubah Kecepatan Suara"
+                                    class="w-10 h-10 rounded-full bg-sky-50 text-[#02275d] font-bold text-xs flex items-center justify-center hover:bg-sky-200 transition-all shadow-sm focus:outline-none border border-sky-100">
+                                    1x
+                                </button>
+
                             </div>
 
                             {{-- Animasi Visualizer (Muncul saat play) --}}
@@ -209,12 +217,13 @@
         </div>
     </section>
 
-	{{-- SCRIPT TEXT-TO-SPEECH (TTS) DENGAN SMART AUTOPLAY --}}
+    {{-- SCRIPT TEXT-TO-SPEECH (TTS) DENGAN SMART AUTOPLAY & SPEED CONTROL --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             if ('speechSynthesis' in window) {
                 const btnPlay   = document.getElementById('btn-tts-play');
                 const btnStop   = document.getElementById('btn-tts-stop');
+                const btnSpeed  = document.getElementById('btn-tts-speed'); // Tombol Baru
                 const iconPlay  = document.getElementById('icon-tts-play');
                 const statusTxt = document.getElementById('tts-status');
                 const visualizer= document.getElementById('tts-visualizer');
@@ -224,8 +233,12 @@
                 let isPlaying = false;
                 let isPaused  = false;
                 let keepAliveInterval;
-                let hasAutoplayed = false; // Penanda agar tidak dobel play
+                let hasAutoplayed = false; 
                 
+                // Variabel Kecepatan (Mulai dari normal/agak lambat)
+                const speeds = [0.9, 1.25, 1.5, 2.0];
+                let currentSpeedIndex = 0;
+
                 // 1. TUNGGU SUARA SIAP
                 function loadVoices() {
                     window.speechSynthesis.getVoices();
@@ -236,7 +249,7 @@
                     speechSynthesis.onvoiceschanged = loadVoices;
                 }
 
-                utterance.rate = 0.9; 
+                utterance.rate = speeds[currentSpeedIndex]; 
                 utterance.pitch = 1.0; 
 
                 const textContainer = document.getElementById('teks-sambutan');
@@ -280,14 +293,17 @@
 
                 // 2. FUNGSI PEMUTAR UTAMA
                 function triggerPlay() {
-                    if(isPlaying) return; // Cegah play berulang
+                    if(isPlaying) return; 
                     
                     window.speechSynthesis.cancel(); 
                     
+                    // Pastikan kecepatan yang diset adalah yang terakhir dipilih user
+                    utterance.rate = speeds[currentSpeedIndex];
+
                     setTimeout(() => {
                         window.speechSynthesis.speak(utterance);
                         isPlaying = true;
-                        hasAutoplayed = true; // Tandai bahwa audio sudah jalan
+                        hasAutoplayed = true; 
                         updateUI_Playing();
                         
                         keepAliveInterval = setInterval(function() {
@@ -299,31 +315,56 @@
                 }
 
                 // ========================================================
-                // 3. SMART AUTOPLAY LOGIC (Trik Melewati Blokir Browser)
+                // LOGIKA TOMBOL KECEPATAN (SPEED)
+                // ========================================================
+                btnSpeed.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    // Pindah ke kecepatan berikutnya (Jika sudah mentok, kembali ke 0)
+                    currentSpeedIndex = (currentSpeedIndex + 1) % speeds.length;
+                    const newSpeed = speeds[currentSpeedIndex];
+                    
+                    // Update teks tombol (Contoh: "1x", "1.5x")
+                    let speedText = newSpeed === 0.9 ? '1x' : newSpeed + 'x';
+                    btnSpeed.innerText = speedText;
+                    
+                    // Terapkan kecepatan ke sistem
+                    utterance.rate = newSpeed;
+
+                    // PERHATIAN: Web Speech API tidak bisa ganti speed on-the-fly.
+                    // Jadi jika sedang berputar, kita harus stop dan putar ulang teksnya dari awal
+                    if (isPlaying && !isPaused) {
+                        window.speechSynthesis.cancel();
+                        isPlaying = false; // Reset status sebentar
+                        
+                        // Mainkan lagi dengan speed baru
+                        setTimeout(() => {
+                            triggerPlay();
+                        }, 100);
+                    }
+                });
+
+                // ========================================================
+                // 3. SMART AUTOPLAY LOGIC 
                 // ========================================================
                 
-                // Percobaan 1: Paksa Autoplay setelah 1.5 detik (Bisa diblokir browser)
                 setTimeout(() => {
                     if(!hasAutoplayed) triggerPlay();
                 }, 1500);
 
-                // Percobaan 2: Autoplay langsung terpicu saat user Scroll atau Klik di mana saja
                 const interactionEvents = ['click', 'touchstart', 'scroll'];
                 const startAudioOnInteraction = function() {
                     if (!hasAutoplayed) {
                         triggerPlay();
                     }
-                    // Hapus event listener ini setelah berhasil terpancing agar web tidak berat
                     interactionEvents.forEach(event => document.removeEventListener(event, startAudioOnInteraction));
                 };
 
-                // Pasang jebakan interaksi ke seluruh halaman
                 interactionEvents.forEach(event => document.addEventListener(event, startAudioOnInteraction, { once: true }));
-                // ========================================================
 
                 // Event Listener Tombol Play/Pause Manual
                 btnPlay.addEventListener('click', function(e) {
-                    e.stopPropagation(); // Mencegah tabrakan dengan event klik global
+                    e.stopPropagation(); 
                     if (!isPlaying) {
                         triggerPlay();
                     } else if (isPaused) {
