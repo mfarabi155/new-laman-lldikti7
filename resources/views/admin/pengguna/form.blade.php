@@ -10,7 +10,7 @@
         <h2 class="text-2xl font-bold text-white tracking-wide">
             {{ isset($user) ? 'Ubah Data User' : 'Tambah User Baru' }}
         </h2>
-        <a href="{{ url('/admin/pengguna') }}" class="bg-white text-argon-dark hover:bg-slate-50 hover:shadow-lg font-bold py-2.5 px-5 rounded-lg shadow-sm transition-all duration-200 flex items-center gap-2 text-sm transform hover:-translate-y-0.5">
+        <a href="{{ route('admin.pengguna.index') }}" class="bg-white text-argon-dark hover:bg-slate-50 hover:shadow-lg font-bold py-2.5 px-5 rounded-lg shadow-sm transition-all duration-200 flex items-center gap-2 text-sm transform hover:-translate-y-0.5">
             <i class="fas fa-arrow-left text-slate-400"></i> Kembali
         </a>
     </div>
@@ -43,7 +43,7 @@
             </div>
 
             {{-- Form Action Dinamis --}}
-            <form action="{{ isset($user) ? url('/admin/pengguna/'.$user->t_user_id) : url('/admin/pengguna') }}" method="POST">
+            <form action="{{ isset($user) ? route('admin.pengguna.update', $user->t_user_id) : route('admin.pengguna.store') }}" method="POST">
                 @csrf
                 
                 {{-- Method PUT khusus untuk Mode Edit --}}

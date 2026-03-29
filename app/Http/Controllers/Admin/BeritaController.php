@@ -31,7 +31,7 @@ class BeritaController extends Controller
         // Ambil data Bagian untuk Dropdown (Hanya jika Developer yang login)
         $pilihanBagian = collect();
         if ($isDeveloper) {
-            $pilihanBagian = \Illuminate\Support\Facades\DB::table('t_bagian')->where('status', '1')->get();
+            $pilihanBagian = \Illuminate\Support\Facades\DB::table('t_bagian')->get();
         }
 
         // 3. Siapkan Query Dasar (Jenis 1 = Berita)

@@ -59,7 +59,7 @@ class PenggunaController extends Controller
     public function create()
     {
         // Ambil data bagian dinamis dari tabel t_bagian (Asumsi status '1' adalah aktif)
-        $pilihanBagian = DB::table('t_bagian')->where('status', '1')->get();
+        $pilihanBagian = DB::table('t_bagian')->where('status', '0')->get();
 
         return view('admin.pengguna.form', compact('pilihanBagian'));
     }
