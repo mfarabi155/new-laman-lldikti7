@@ -54,11 +54,11 @@
                 <h3 class="text-xl font-bold mb-0 text-white tracking-wide">Link Layanan</h3>
             </div>
             <ul class="text-slate-400 text-sm space-y-3">
-                <li><a href="#" class="hover:text-accent transition flex items-center"><i class="fas fa-university text-xs mr-2 text-culture_sky shadow-soft"></i> PDDikti</a></li>
-                <li><a href="#" class="hover:text-accent transition flex items-center"><i class="fas fa-book-open text-xs mr-2 text-culture_green shadow-soft"></i> SISTER</a></li>
+                <li><a href="https://pddikti.kemdiktisaintek.go.id/" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition flex items-center"><i class="fas fa-university text-xs mr-2 text-culture_sky shadow-soft"></i> PDDikti</a></li>
+                {{-- <li><a href="#" class="hover:text-accent transition flex items-center"><i class="fas fa-book-open text-xs mr-2 text-culture_green shadow-soft"></i> SISTER</a></li>
                 <li><a href="#" class="hover:text-accent transition flex items-center"><i class="fas fa-award text-xs mr-2 text-culture_red shadow-soft"></i> BIMA Riset</a></li>
                 <li><a href="#" class="hover:text-accent transition flex items-center"><i class="fas fa-chalkboard-teacher text-xs mr-2 text-culture_sky shadow-soft"></i> Jafung Dosen</a></li>
-                <li><a href="#" class="hover:text-accent transition flex items-center"><i class="fas fa-question-circle text-xs mr-2 text-culture_green shadow-soft"></i> FAQ & Bantuan</a></li>
+                <li><a href="#" class="hover:text-accent transition flex items-center"><i class="fas fa-question-circle text-xs mr-2 text-culture_green shadow-soft"></i> FAQ & Bantuan</a></li> --}}
             </ul>
         </div>
 
