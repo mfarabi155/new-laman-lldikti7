@@ -28,8 +28,8 @@ class SearchController extends Controller
             ->orderBy('info_tanggal', 'desc')
             ->get();
 
-        // Cari Pengumuman (Asumsi id_info_jenis = 2)
-        $pengumuman = Info::where('id_info_jenis', 2) // Ganti ID sesuai DB Anda
+        // Cari Pengumuman (Asumsi id_info_jenis = 0)
+        $pengumuman = Info::where('id_info_jenis', 0) // Ganti ID sesuai DB Anda
             ->where('info_status', 0)
             ->where(function($query) use ($keyword) {
                 $query->where('info_judul', 'like', "%{$keyword}%")
