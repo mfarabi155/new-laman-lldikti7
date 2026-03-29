@@ -101,9 +101,10 @@ Route::prefix('pangkalan')->group(function () {
     Route::post('/login', [AuthController::class, 'authenticate'])->name('admin.login.submit');
 
     Route::middleware('admin.session')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('admin.dashboard');
+        // Route::get('/dashboard', function () {
+        //     return view('admin.dashboard');
+        // })->name('admin.dashboard');
+        Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
 
         Route::post('/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
