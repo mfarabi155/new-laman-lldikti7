@@ -24,6 +24,7 @@ Route::get('/laman-old', function () {
 })->name('laman.old');
 
 Route::get('/', [BerandaController::class, 'index'])->name('home');
+Route::get('/search', [App\Http\Controllers\Laman\SearchController::class, 'index'])->name('search');
 
 // Rute Pengumuman
 Route::get('/pengumuman', [LamanPengumumanController::class, 'index'])->name('pengumuman.index');

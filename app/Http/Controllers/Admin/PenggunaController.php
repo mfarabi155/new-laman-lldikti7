@@ -15,15 +15,42 @@ class PenggunaController extends Controller
     /**
      * Menampilkan daftar pengguna (Read)
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Join dengan t_bagian agar kita bisa menampilkan 'bagian_nama' di tabel HTML
-        $pengguna = User::leftJoin('t_bagian', 't_user.t_bagian_id', '=', 't_bagian.bagian_id')
-            ->select('t_user.*', 't_bagian.bagian_nama')
-            ->orderBy('t_user.t_user_created_date', 'desc')
-            ->paginate(10);
-            
-        return view('admin.pengguna.index', compact('pengguna'));
+        // 1. Tangkap parameter dari URL
+        $search = $request->input('search');
+        $bagianId = $request->input('bagian_id'); // Parameter baru untuk dropdown
+        $perPage = $request->input('per_page', 10);
+
+        // 2. Ambil data Bagian untuk ditampilkan di Dropdown Blade
+        $pilihanBagian = DB::table('t_bagian')->where('status', '1')->get();
+
+        // 3. Siapkan Query Dasar (Join)
+        $query = User::leftJoin('t_bagian', 't_user.t_bagian_id', '=', 't_bagian.bagian_id')
+            ->select('t_user.*', 't_bagian.bagian_nama');
+
+        // 4. Logika Pencarian Username
+        if (!empty($search)) {
+            $query->where('t_user.t_user_username', 'LIKE', '%' . $search . '%');
+        }
+
+        // 5. Logika Filter Filter Bagian (Dropdown)
+        if (!empty($bagianId)) {
+            $query->where('t_user.t_bagian_id', $bagianId);
+        }
+
+        // 6. Eksekusi Query dengan Paginasi Dinamis
+        $pengguna = $query->orderBy('t_user.t_user_created_date', 'desc')
+            ->paginate($perPage);
+
+        // 7. Pertahankan parameter URL saat pindah halaman paginasi
+        $pengguna->appends([
+            'search' => $search,
+            'bagian_id' => $bagianId,
+            'per_page' => $perPage
+        ]);
+
+        return view('admin.pengguna.index', compact('pengguna', 'pilihanBagian'));
     }
 
     /**
@@ -33,7 +60,7 @@ class PenggunaController extends Controller
     {
         // Ambil data bagian dinamis dari tabel t_bagian (Asumsi status '1' adalah aktif)
         $pilihanBagian = DB::table('t_bagian')->where('status', '1')->get();
-        
+
         return view('admin.pengguna.form', compact('pilihanBagian'));
     }
 
@@ -75,7 +102,7 @@ class PenggunaController extends Controller
     {
         $user = User::findOrFail($id);
         $pilihanBagian = DB::table('t_bagian')->where('status', '1')->get();
-        
+
         return view('admin.pengguna.form', compact('user', 'pilihanBagian'));
     }
 
@@ -99,7 +126,7 @@ class PenggunaController extends Controller
 
         $user->t_user_username = $request->username;
         $user->t_bagian_id     = $request->bagian_id;
-        
+
         if ($request->filled('password')) {
             $user->t_user_password = Hash::make($request->password);
         }
@@ -118,14 +145,14 @@ class PenggunaController extends Controller
     public function disable($id)
     {
         $user = User::findOrFail($id);
-        
+
         // Logika Toggle: Jika status 1 (Aktif) jadikan 0 (Nonaktif). Sebaliknya.
         $newStatus = ($user->t_user_status == 1) ? 0 : 1;
         $user->t_user_status = $newStatus;
-        
+
         $user->t_user_updated_date = now();
         $user->t_user_updated_by   = Auth::check() ? Auth::user()->t_user_username : 'System';
-        
+
         $user->save();
 
         $pesan = $newStatus == 1 ? 'diaktifkan kembali!' : 'dinonaktifkan!';

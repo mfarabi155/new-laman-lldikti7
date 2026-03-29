@@ -61,7 +61,7 @@
 
     <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-6 min-h-[400px]">
         <h2 class="text-lg font-bold text-argon-dark mb-4">Aktivitas Terbaru</h2>
-        <p class="text-slate-500">Tabel manajemen data akan muncul di sini nanti.</p>
+        <p class="text-slate-500"></p>
     </div>
 
 @endsection

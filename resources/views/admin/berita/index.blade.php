@@ -20,7 +20,6 @@
     {{-- Header Judul & Tombol Tambah --}}
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 relative z-10">
         <h2 class="text-2xl font-bold text-white tracking-wide">Daftar Berita</h2>
-        {{-- MENGGUNAKAN ROUTE --}}
         <a href="{{ route('admin.berita.tambah') }}" class="bg-white text-argon-blue hover:bg-slate-50 hover:shadow-lg font-bold py-2.5 px-5 rounded-lg shadow-sm transition-all duration-200 flex items-center gap-2 text-sm transform hover:-translate-y-0.5">
             <i class="fas fa-plus"></i> Tambah Berita
         </a>
@@ -31,43 +30,71 @@
         
         {{-- Area Filter Pencarian --}}
         <div class="p-6 border-b border-slate-100 bg-white">
-            {{-- MENGGUNAKAN ROUTE --}}
-            <form action="{{ route('admin.berita.index') }}" method="GET" class="flex flex-wrap gap-3 items-end">
+            <form action="{{ route('admin.berita.index') }}" method="GET" class="flex flex-wrap gap-3 items-end w-full">
                 
-                <div class="flex-1 min-w-[150px]">
-                    <div class="relative">
-                        <input type="date" name="start_date" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-sm px-4 py-2.5 focus:ring-2 focus:ring-argon-blue focus:bg-white text-slate-500 cursor-pointer">
-                    </div>
+                {{-- Dropdown Jumlah Data --}}
+                <div class="flex-1 min-w-[80px] max-w-[100px]">
+                    <div class="text-xs text-slate-400 mb-1 font-semibold ml-1">Tampilkan</div>
+                    <select name="per_page" onchange="this.form.submit()" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-sm px-3 py-2.5 focus:ring-2 focus:ring-argon-blue focus:bg-white text-slate-700 cursor-pointer">
+                        <option value="5" {{ request('per_page') == 5 ? 'selected' : '' }}>5</option>
+                        <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
+                        <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
+                        <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                        <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+                    </select>
                 </div>
 
-                <div class="flex-1 min-w-[150px]">
-                    <div class="relative">
-                        <input type="date" name="end_date" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-sm px-4 py-2.5 focus:ring-2 focus:ring-argon-blue focus:bg-white text-slate-500 cursor-pointer">
-                    </div>
+                <div class="flex-1 min-w-[140px]">
+                    <div class="text-xs text-slate-400 mb-1 font-semibold ml-1">Tanggal Mulai</div>
+                    <input type="date" name="start_date" value="{{ request('start_date') }}" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-sm px-4 py-2.5 focus:ring-2 focus:ring-argon-blue focus:bg-white text-slate-500 cursor-pointer">
                 </div>
 
-                <div class="flex-1 min-w-[150px]">
-                    <select name="status" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-sm px-4 py-2.5 focus:ring-2 focus:ring-argon-blue focus:bg-white text-slate-500 cursor-pointer appearance-none">
+                <div class="flex-1 min-w-[140px]">
+                    <div class="text-xs text-slate-400 mb-1 font-semibold ml-1">Tanggal Akhir</div>
+                    <input type="date" name="end_date" value="{{ request('end_date') }}" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-sm px-4 py-2.5 focus:ring-2 focus:ring-argon-blue focus:bg-white text-slate-500 cursor-pointer">
+                </div>
+
+                <div class="flex-1 min-w-[140px]">
+                    <div class="text-xs text-slate-400 mb-1 font-semibold ml-1">Status</div>
+                    <select name="status" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-sm px-4 py-2.5 focus:ring-2 focus:ring-argon-blue focus:bg-white text-slate-500 cursor-pointer">
                         <option value="">Semua Status</option>
-                        <option value="0">Tampil</option>
-                        <option value="1">Sembunyi</option>
+                        <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Tampil</option>
+                        <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Sembunyi</option>
                     </select>
                 </div>
 
-                <div class="flex-1 min-w-[150px]">
-                    <select name="bagian" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-sm px-4 py-2.5 focus:ring-2 focus:ring-argon-blue focus:bg-white text-slate-500 cursor-pointer appearance-none">
-                        <option value="">Semua Bagian</option>
-                        {{-- Opsi bagian bisa diloop di sini --}}
-                    </select>
-                </div>
+                {{-- FITUR BARU: DROPDOWN BAGIAN HANYA MUNCUL JIKA DEVELOPER --}}
+                @if (session('admin_bagian_id') == 0)
+                    <div class="flex-1 min-w-[150px]">
+                        <div class="text-xs text-slate-400 mb-1 font-semibold ml-1">Bagian</div>
+                        <select name="bagian" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-sm px-4 py-2.5 focus:ring-2 focus:ring-argon-blue focus:bg-white text-slate-500 cursor-pointer">
+                            <option value="">Semua Bagian</option>
+                            @foreach ($pilihanBagian as $bgn)
+                                <option value="{{ $bgn->bagian_id }}" {{ request('bagian') == $bgn->bagian_id ? 'selected' : '' }}>
+                                    {{ $bgn->bagian_nama }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
 
                 <div class="flex-[2] min-w-[200px]">
-                    <input type="text" name="search" value="{{ request('search') }}" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-sm px-4 py-2.5 focus:ring-2 focus:ring-argon-blue focus:bg-white text-slate-700" placeholder="Cari Judul">
+                    <div class="text-xs text-slate-400 mb-1 font-semibold ml-1">Pencarian Judul</div>
+                    <input type="text" name="search" value="{{ request('search') }}" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-sm px-4 py-2.5 focus:ring-2 focus:ring-argon-blue focus:bg-white text-slate-700" placeholder="Cari Judul Berita...">
                 </div>
 
-                <button type="submit" class="bg-argon-blue hover:bg-argon-indigo text-white px-6 py-2.5 rounded-lg transition-colors shadow-sm font-bold flex items-center gap-2">
-                    <i class="fas fa-filter text-sm"></i> Tampil
-                </button>
+                <div class="flex gap-2">
+                    <button type="submit" class="bg-argon-blue hover:bg-argon-indigo text-white px-6 py-2.5 rounded-lg transition-colors shadow-sm font-bold flex items-center gap-2">
+                        <i class="fas fa-filter text-sm"></i> Filter
+                    </button>
+
+                    {{-- Tombol Reset Filter jika ada parameter yang aktif --}}
+                    @if (request()->anyFilled(['search', 'start_date', 'end_date', 'status', 'bagian']) || request('per_page') != 10)
+                        <a href="{{ route('admin.berita.index') }}" class="bg-slate-200 hover:bg-slate-300 text-slate-600 px-4 py-2.5 rounded-lg transition-colors shadow-sm flex items-center justify-center" title="Reset Filter">
+                            <i class="fas fa-sync-alt"></i>
+                        </a>
+                    @endif
+                </div>
             </form>
         </div>
 
@@ -88,7 +115,6 @@
                 
                 <tbody class="text-slate-600 text-sm divide-y divide-slate-100">
                     
-                    {{-- VARIABEL DIUBAH MENJADI HURUF KECIL: $berita --}}
                     @forelse($berita as $key => $item)
                         <tr class="hover:bg-slate-50/50 transition-colors duration-150">
                             {{-- No --}}
@@ -127,12 +153,11 @@
                             {{-- Aksi --}}
                             <td class="px-6 py-4 text-center">
                                 <div class="flex items-center justify-center gap-2">
-                                    {{-- Tombol Edit MENGGUNAKAN ROUTE --}}
                                     <a href="{{ route('admin.berita.edit', $item->info_id) }}" class="w-8 h-8 rounded bg-orange-400 hover:bg-orange-500 text-white flex items-center justify-center transition-colors shadow-sm" title="Edit">
                                         <i class="fas fa-pen text-xs"></i>
                                     </a>
                                     
-                                    {{-- Tombol Toggle Tampil/Sembunyikan MENGGUNAKAN ROUTE --}}
+                                    {{-- Menggunakan route bawaan Laravel Anda, pastikan penulisan .disable sudah dihapus --}}
                                     <form action="{{ route('admin.berita.disable', $item->info_id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin mengubah status Berita ini?');">
                                         @csrf
                                         <button type="submit" class="w-8 h-8 rounded {{ $item->info_status == 0 ? 'bg-red-400 hover:bg-red-500' : 'bg-emerald-400 hover:bg-emerald-500' }} text-white flex items-center justify-center transition-colors shadow-sm" title="{{ $item->info_status == 0 ? 'Sembunyikan' : 'Tampilkan' }}">
@@ -144,9 +169,15 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-8 text-center text-slate-400">
+                            <td colspan="6" class="px-6 py-12 text-center text-slate-400">
                                 <i class="fas fa-newspaper text-4xl mb-3 opacity-50"></i>
-                                <p class="text-sm">Belum ada data Berita yang tersedia.</p>
+                                <p class="text-sm">
+                                    @if(request()->anyFilled(['search', 'start_date', 'end_date', 'status', 'bagian']))
+                                        Berita dengan filter tersebut tidak ditemukan.
+                                    @else
+                                        Belum ada data Berita yang tersedia.
+                                    @endif
+                                </p>
                             </td>
                         </tr>
                     @endforelse
@@ -155,10 +186,17 @@
             </table>
         </div>
 
-        {{-- Pagination (HURUF KECIL) --}}
-        <div class="px-6 py-4 border-t border-slate-100 bg-slate-50/50">
-            {{ $berita->links('pagination::tailwind') }}
-        </div>
+        {{-- PAGINATION DINAMIS LARAVEL --}}
+        @if($berita->hasPages())
+            <div class="px-6 py-4 border-t border-slate-100 bg-slate-50/50 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="text-sm text-slate-500 font-medium">
+                    Menampilkan {{ $berita->firstItem() ?? 0 }} - {{ $berita->lastItem() ?? 0 }} dari total {{ $berita->total() }} data
+                </div>
+                <div>
+                    {{ $berita->links('pagination::tailwind') }}
+                </div>
+            </div>
+        @endif
 
     </div>
 

@@ -40,18 +40,14 @@
                     $imageSrc = null;
 
                     if ($cover && !empty($cover->info_file)) {
-                        // Mengambil nama file aslinya saja (berjaga-jaga jika isinya string path 'berita/gambar.jpg')
                         $filename = basename($cover->info_file);
                         
-                        // 1. Cek di lokasi baru (storage/berita)
                         if (file_exists(public_path('storage/berita/' . $filename))) {
                             $imageSrc = asset('storage/berita/' . $filename);
                         } 
-                        // 2. Cek di lokasi lama (storage/oldberita)
                         elseif (file_exists(public_path('storage/oldberita/' . $filename))) {
                             $imageSrc = asset('storage/oldberita/' . $filename);
                         }
-                        // 3. Fallback path default bawaan database jika dua format di atas tidak cocok
                         elseif (file_exists(public_path('storage/' . $cover->info_file))) {
                             $imageSrc = asset('storage/' . $cover->info_file);
                         }
@@ -65,13 +61,11 @@
                         @if($imageSrc)
                             <img src="{{ $imageSrc }}" alt="{{ $item->info_judul }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out">
                         @else
-                            {{-- TAMPILAN JIKA TIDAK ADA GAMBAR ATAU FILE FISIK TIDAK DITEMUKAN --}}
                             <div class="w-full h-full flex items-center justify-center p-8 bg-gradient-to-br from-slate-50 to-slate-200">
                                 <img src="{{ asset('laman/img/logo_lldikti.png') }}" alt="Logo LLDIKTI 7" class="w-auto h-full max-h-28 object-contain opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500">
                             </div>
                         @endif
                         
-                        {{-- Lencana Tanggal Mengambang --}}
                         <div class="absolute top-4 left-4 bg-white/90 backdrop-blur text-argon-dark text-center rounded-xl shadow-lg border border-white/50 px-3 py-1.5 min-w-[3.5rem]">
                             <span class="block text-xl font-black leading-none">{{ \Carbon\Carbon::parse($item->info_tanggal)->format('d') }}</span>
                             <span class="block text-[10px] font-bold uppercase tracking-wider text-argon-blue">{{ \Carbon\Carbon::parse($item->info_tanggal)->translatedFormat('M') }}</span>
@@ -79,10 +73,21 @@
                     </div>
 
                     <div class="p-6 md:p-8 flex flex-col flex-grow relative">
-                        {{-- Kategori / Label --}}
-                        <span class="text-[10px] font-bold text-argon-blue uppercase tracking-widest mb-3 block">
-                            <i class="fas fa-bookmark mr-1"></i> Liputan Berita
-                        </span>
+                        
+                        {{-- KATEGORI INFO & TOTAL VIEWS DIBUAT BERSEBELAHAN --}}
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-[10px] font-bold text-argon-blue uppercase tracking-widest block">
+                                <i class="fas fa-bookmark mr-1"></i> Liputan Berita
+                            </span>
+                            
+                            @php
+                                $statIndex = \Illuminate\Support\Facades\DB::table('t_info_statistik')->where('info_id', $item->info_id)->first();
+                            @endphp
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                                <i class="far fa-eye text-argon-blue"></i>
+                                {{ $statIndex ? number_format($statIndex->views, 0, ',', '.') : 0 }} Views
+                            </span>
+                        </div>
 
                         <a href="{{ route('berita.show', $item->slug ?: $item->info_id) }}" class="block mb-3">
                             <h2 class="text-xl font-bold text-slate-800 group-hover:text-argon-blue transition-colors line-clamp-2 leading-snug">
@@ -95,6 +100,7 @@
                         </p>
 
                         <div class="mt-auto pt-5 border-t border-slate-100 flex items-center justify-between">
+                            
                             <div class="flex items-center gap-2 text-xs font-semibold text-slate-400">
                                 <i class="far fa-user"></i>
                                 <span class="truncate max-w-[120px]">{{ $item->bagian_nama ?? 'Admin LLDIKTI' }}</span>

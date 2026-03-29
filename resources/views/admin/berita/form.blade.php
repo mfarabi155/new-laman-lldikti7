@@ -63,8 +63,30 @@
                             <p class="text-xs text-slate-500 mb-2 italic">Gambar saat ini di database:</p>
                             <div class="grid grid-cols-2 gap-2">
                                 @foreach($berita->details->where('info_judul_file', 'Gambar Berita') as $img)
-                                    <div class="relative">
-                                        <img src="{{ asset('storage/' . $img->info_file) }}" alt="Gambar" class="w-full h-24 object-cover rounded-lg border border-slate-200 shadow-sm">
+                                    @php
+                                        // LOGIKA PENGECEKAN GAMBAR LAMA
+                                        $imgSrc = null;
+                                        if (!empty($img->info_file)) {
+                                            $filename = basename($img->info_file);
+                                            if (file_exists(public_path('storage/berita/' . $filename))) {
+                                                $imgSrc = asset('storage/berita/' . $filename);
+                                            } elseif (file_exists(public_path('storage/oldberita/' . $filename))) {
+                                                $imgSrc = asset('storage/oldberita/' . $filename);
+                                            } elseif (file_exists(public_path('storage/' . $img->info_file))) {
+                                                $imgSrc = asset('storage/' . $img->info_file);
+                                            } elseif (file_exists(public_path('gambar_berita/Berita/' . $filename))) {
+                                                $imgSrc = asset('gambar_berita/Berita/' . $filename);
+                                            }
+                                        }
+                                        
+                                        // Fallback jika file fisik benar-benar hilang
+                                        if(!$imgSrc) {
+                                            $imgSrc = asset('laman/img/logo_lldikti.png');
+                                        }
+                                    @endphp
+
+                                    <div class="relative bg-white rounded-lg border border-slate-200 flex items-center justify-center overflow-hidden">
+                                        <img src="{{ $imgSrc }}" alt="Gambar" class="w-full h-24 object-cover shadow-sm">
                                     </div>
                                 @endforeach
                             </div>
@@ -98,15 +120,11 @@
         const imageInput = document.getElementById('image-input');
         const previewContainer = document.getElementById('image-preview-container');
         
-        // Kita menggunakan DataTransfer untuk memanipulasi file yang ada di dalam input
         let dt = new DataTransfer(); 
 
-        // Ketika user memilih file baru
         imageInput.addEventListener('change', function(event) {
-            // Reset DataTransfer jika user menekan tombol "Choose File" lagi
             dt = new DataTransfer(); 
             
-            // Masukkan file yang dipilih ke dalam memori DataTransfer
             for (let i = 0; i < event.target.files.length; i++) {
                 dt.items.add(event.target.files[i]);
             }
@@ -114,17 +132,14 @@
             renderPreview();
         });
 
-        // Fungsi untuk merender ulang tampilan preview
         function renderPreview() {
-            previewContainer.innerHTML = ''; // Bersihkan container
+            previewContainer.innerHTML = ''; 
 
             if (dt.files.length > 0) {
                 previewContainer.classList.remove('hidden');
                 
-                // Pastikan input file form menyimpan data terbaru kita
                 imageInput.files = dt.files;
 
-                // Looping untuk membuat setiap kotak gambar
                 Array.from(dt.files).forEach((file, index) => {
                     if (!file.type.match('image.*')) return;
 
@@ -138,17 +153,14 @@
                         img.src = e.target.result;
                         img.className = 'w-full h-24 object-cover transition-transform duration-300 group-hover:scale-110 group-hover:opacity-75';
                         
-                        // Lencana "Baru"
                         const badge = document.createElement('span');
                         badge.className = 'absolute top-1 left-1 bg-argon-blue text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow-sm opacity-90';
                         badge.innerText = 'Baru';
 
-                        // Tombol Hapus (Silang Merah)
                         const deleteBtn = document.createElement('button');
                         deleteBtn.type = 'button';
                         deleteBtn.className = 'absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md opacity-0 group-hover:opacity-100 transition-opacity focus:outline-none';
                         deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
-                        // Event saat tombol hapus diklik
                         deleteBtn.onclick = function() {
                             removeFile(index);
                         };
@@ -162,25 +174,22 @@
                     reader.readAsDataURL(file);
                 });
             } else {
-                // Sembunyikan container jika tidak ada file tersisa
                 previewContainer.classList.add('hidden');
-                imageInput.value = ''; // Reset nilai input form
+                imageInput.value = ''; 
             }
         }
 
-        // Fungsi untuk menghapus 1 file spesifik dari daftar memori
         function removeFile(indexToRemove) {
             const newDt = new DataTransfer();
             
-            // Pindahkan semua file KECUALI yang index-nya ingin dihapus ke memori baru
             for (let i = 0; i < dt.files.length; i++) {
                 if (i !== indexToRemove) {
                     newDt.items.add(dt.files[i]);
                 }
             }
             
-            dt = newDt; // Timpa memori lama dengan yang baru
-            renderPreview(); // Render ulang tampilan (kotak gambar yang dihapus akan hilang)
+            dt = newDt; 
+            renderPreview(); 
         }
     });
 </script>

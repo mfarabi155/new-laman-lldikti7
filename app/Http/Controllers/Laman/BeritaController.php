@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Laman;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Info;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class BeritaController extends Controller
 {
@@ -42,6 +44,42 @@ class BeritaController extends Controller
             })
             ->firstOrFail();
 
+        $infoId = $berita->info_id;
+        $ipAddress = request()->ip(); // Ambil IP pengunjung
+        $today = Carbon::today();
+
+        $hasVisited = DB::table('t_info_ip_logs')
+            ->where('info_id', $infoId)
+            ->where('ip_address', $ipAddress)
+            ->whereDate('accessed_at', $today)
+            ->exists();
+        
+        if (!$hasVisited) {
+            DB::table('t_info_ip_logs')->insert([
+                'info_id'     => $infoId,
+                'ip_address'  => $ipAddress,
+                'accessed_at' => Carbon::now(),
+            ]);
+        
+        $statistik = DB::table('t_info_statistik')->where('info_id', $infoId)->first();
+            
+        if ($statistik) {
+            DB::table('t_info_statistik')->where('info_id', $infoId)->increment('views');
+        } else {
+            DB::table('t_info_statistik')->insert([
+                'info_id'    => $infoId,
+                'views'      => 1,
+                'shares'     => 0,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+                ]);
+            }
+        }
+
+        // 3. Ambil Total View Terbaru untuk dikirim ke Blade
+        $dataStatistik = DB::table('t_info_statistik')->where('info_id', $infoId)->first();
+        $totalViews = $dataStatistik ? $dataStatistik->views : 0;
+
         // Ambil 4 berita terbaru untuk sidebar
         $beritaTerbaru = Info::with('details')
             ->leftJoin('t_bagian', 't_info.t_bagian_id', '=', 't_bagian.bagian_id')
@@ -53,6 +91,6 @@ class BeritaController extends Controller
             ->take(4)
             ->get();
 
-        return view('laman.berita.show', compact('berita', 'beritaTerbaru'));
+        return view('laman.berita.show', compact('berita', 'beritaTerbaru', 'totalViews'));
     }
 }

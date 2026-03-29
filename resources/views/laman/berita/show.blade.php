@@ -27,16 +27,20 @@
 
                         {{-- Judul dan Meta --}}
                         <div class="p-6 md:p-8 lg:p-10 pb-6 border-b border-slate-50">
-                            <div
-                                class="flex flex-wrap items-center gap-4 text-xs font-bold text-slate-500 uppercase tracking-wider mb-5">
-                                <span
-                                    class="bg-argon-blue/10 text-argon-blue py-1.5 px-3 rounded-lg flex items-center gap-2">
+                            <div class="flex flex-wrap items-center gap-4 text-xs font-bold text-slate-500 uppercase tracking-wider mb-5">
+                                <span class="bg-argon-blue/10 text-argon-blue py-1.5 px-3 rounded-lg flex items-center gap-2">
                                     <i class="fas fa-bookmark"></i> Berita
                                 </span>
                                 <span class="flex items-center gap-1.5"><i class="far fa-calendar-alt"></i>
                                     {{ \Carbon\Carbon::parse($berita->info_tanggal)->translatedFormat('d F Y') }}</span>
                                 <span class="flex items-center gap-1.5"><i class="far fa-user"></i>
                                     {{ $berita->bagian_nama ?? 'Admin' }}</span>
+                                
+                                {{-- TAMBAHAN: TOTAL VIEW --}}
+                                <span class="flex items-center gap-1.5 text-secondary">
+                                    <i class="far fa-eye"></i>
+                                    {{ number_format($totalViews ?? 0, 0, ',', '.') }} Dilihat
+                                </span>
                             </div>
 
                             <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-800 leading-tight">
