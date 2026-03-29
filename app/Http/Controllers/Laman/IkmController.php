@@ -39,10 +39,29 @@ class IkmController extends Controller
         try {
             DB::beginTransaction();
 
-            // 1. Simpan Data Responden
+            // ==========================================
+            // LOGIKA MASKING DATA (PII)
+            // ==========================================
+
+            // 1. Masking Nama (Contoh: "Budi Santoso" menjadi "Bu**********")
+            $namaAsli = trim($request->nama);
+            $panjangNama = strlen($namaAsli);
+            // Ambil 2 huruf pertama, sisanya diganti bintang (*)
+            $namaMasked = substr($namaAsli, 0, 2) . str_repeat('*', max(0, $panjangNama - 2));
+
+            // 2. Masking Email (Contoh: "budi.santoso@gmail.com" menjadi "bu***@gmail.com")
+            $emailParts = explode("@", trim($request->email));
+            $emailLocal = $emailParts[0];
+            $emailDomain = $emailParts[1] ?? '';
+            $panjangLocal = strlen($emailLocal);
+            // Ambil 2 huruf pertama dari nama email, sisanya bintang, lalu gabung dengan @domain
+            $emailMasked = substr($emailLocal, 0, 2) . str_repeat('*', max(0, $panjangLocal - 2)) . '@' . $emailDomain;
+
+
+            // 1. Simpan Data Responden dengan data yang sudah di-masking
             $responden = SurveyResponden::create([
-                'nama' => $request->nama,
-                'email' => $request->email,
+                'nama' => $namaMasked,       // Gunakan variabel $namaMasked
+                'email' => $emailMasked,     // Gunakan variabel $emailMasked
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'usia_id' => $request->usia_id,
                 'profesi_id' => $request->profesi_id,
