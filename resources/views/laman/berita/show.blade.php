@@ -79,9 +79,7 @@
                         @endif
 
                         {{-- Isi Teks Berita --}}
-                        <div class="p-6 md:p-8 lg:p-10 text-slate-700 leading-relaxed text-base md:text-lg article-content">
-                            {!! $berita->info_isi !!}
-                        </div>
+                        <div class="p-6 md:p-8 lg:p-10 text-slate-700 leading-relaxed text-base md:text-lg article-content">{!! $berita->info_isi !!}</div>
 
                         {{-- FITUR SHARE BERITA --}}
                         <div class="px-6 md:px-8 lg:px-10 pb-8 flex items-center gap-4">

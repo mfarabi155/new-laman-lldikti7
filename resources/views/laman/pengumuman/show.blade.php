@@ -53,9 +53,7 @@
 
                         {{-- Isi Konten --}}
                         {{-- Class 'article-content' digunakan untuk styling CSS custom di bawah --}}
-                        <div class="p-6 md:p-8 lg:p-10 text-slate-700 leading-relaxed text-base md:text-lg article-content">
-                            {!! $pengumuman->info_isi !!}
-                        </div>
+                        <div class="p-6 md:p-8 lg:p-10 text-slate-700 leading-relaxed text-base md:text-lg article-content">{!! $pengumuman->info_isi !!}</div>
 
                         {{-- BAGIAN LAMPIRAN (Jika Ada) --}}
                         @if (isset($pengumuman->details) && $pengumuman->details->count() > 0)
