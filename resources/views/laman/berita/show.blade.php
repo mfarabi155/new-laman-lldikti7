@@ -27,15 +27,17 @@
 
                         {{-- Judul dan Meta --}}
                         <div class="p-6 md:p-8 lg:p-10 pb-6 border-b border-slate-50">
-                            <div class="flex flex-wrap items-center gap-4 text-xs font-bold text-slate-500 uppercase tracking-wider mb-5">
-                                <span class="bg-argon-blue/10 text-argon-blue py-1.5 px-3 rounded-lg flex items-center gap-2">
+                            <div
+                                class="flex flex-wrap items-center gap-4 text-xs font-bold text-slate-500 uppercase tracking-wider mb-5">
+                                <span
+                                    class="bg-argon-blue/10 text-argon-blue py-1.5 px-3 rounded-lg flex items-center gap-2">
                                     <i class="fas fa-bookmark"></i> Berita
                                 </span>
                                 <span class="flex items-center gap-1.5"><i class="far fa-calendar-alt"></i>
                                     {{ \Carbon\Carbon::parse($berita->info_tanggal)->translatedFormat('d F Y') }}</span>
                                 <span class="flex items-center gap-1.5"><i class="far fa-user"></i>
                                     {{ $berita->bagian_nama ?? 'Admin' }}</span>
-                                
+
                                 {{-- TAMBAHAN: TOTAL VIEW --}}
                                 <span class="flex items-center gap-1.5 text-secondary">
                                     <i class="far fa-eye"></i>
@@ -126,14 +128,16 @@
                                             }
                                         @endphp
 
-                                        @if($gallerySrc)
+                                        @if ($gallerySrc)
                                             <a href="{{ $gallerySrc }}" target="_blank"
                                                 class="group block overflow-hidden rounded-xl border border-slate-200 shadow-sm relative h-48 cursor-zoom-in">
                                                 <img src="{{ $gallerySrc }}"
                                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                                     alt="Galeri Berita">
-                                                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                                                    <i class="fas fa-expand text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity scale-50 group-hover:scale-100 duration-300"></i>
+                                                <div
+                                                    class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                                                    <i
+                                                        class="fas fa-expand text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity scale-50 group-hover:scale-100 duration-300"></i>
                                                 </div>
                                             </a>
                                         @endif
@@ -156,8 +160,8 @@
 
                         <div class="space-y-6">
                             @forelse($beritaTerbaru as $terbaru)
-                                @php 
-                                    $coverSidebar = $terbaru->details->first(); 
+                                @php
+                                    $coverSidebar = $terbaru->details->first();
                                     $sidebarSrc = null;
 
                                     // PENGECEKAN GAMBAR SIDEBAR
@@ -172,10 +176,11 @@
                                         }
                                     }
                                 @endphp
-                                
+
                                 <a href="{{ route('berita.show', $terbaru->slug) }}" class="group flex gap-4 items-start">
                                     {{-- Thumbnail Kotak --}}
-                                    <div class="w-20 h-20 shrink-0 rounded-xl overflow-hidden bg-slate-100 border border-slate-100">
+                                    <div
+                                        class="w-20 h-20 shrink-0 rounded-xl overflow-hidden bg-slate-100 border border-slate-100">
                                         @if ($sidebarSrc)
                                             <img src="{{ $sidebarSrc }}"
                                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
@@ -189,7 +194,8 @@
                                         @endif
                                     </div>
                                     <div class="flex-1">
-                                        <h4 class="font-bold text-sm text-slate-700 leading-snug group-hover:text-argon-blue transition-colors mb-2 line-clamp-2">
+                                        <h4
+                                            class="font-bold text-sm text-slate-700 leading-snug group-hover:text-argon-blue transition-colors mb-2 line-clamp-2">
                                             {{ $terbaru->info_judul }}
                                         </h4>
                                         <span class="text-xs text-slate-400 flex items-center gap-1"><i
@@ -204,7 +210,8 @@
                     </div>
 
                     {{-- Widget Opsional LLDikti --}}
-                    <div class="bg-gradient-to-br from-blue-800 to-blue-500 rounded-2xl shadow-md p-6 text-white text-center">
+                    <div
+                        class="bg-gradient-to-br from-blue-800 to-blue-500 rounded-2xl shadow-md p-6 text-white text-center">
                         <img src="{{ asset('laman/img/Logo-Tut-Wuri-Handayani.png') }}"
                             class="h-16 w-auto mx-auto mb-4 object-contain" alt="Tut Wuri">
 
@@ -225,6 +232,24 @@
 
     {{-- CSS KHUSUS UNTUK FORMATTING ISI BERITA --}}
     <style>
+        /* 1. MEMAKSA BROWSER MEMBACA "ENTER" DAN "SPASI" SESUAI INPUTAN ADMIN */
+        .article-content {
+            white-space: pre-wrap !important; 
+            word-wrap: break-word;
+            text-align: justify !important;
+        }
+
+        /* 2. MEMAKSA RATA KANAN-KIRI & MENGHAPUS STYLE BAWAAN COPY-PASTE (MS WORD) */
+        .article-content p,
+        .article-content div,
+        .article-content span,
+        .article-content ul,
+        .article-content ol,
+        .article-content li {
+            text-align: justify !important;
+        }
+
+        /* Memberikan jarak ideal antar paragraf */
         .article-content p {
             margin-bottom: 1.25rem;
         }
@@ -256,7 +281,8 @@
             max-width: 100%;
             height: auto;
             border-radius: 0.75rem;
-            margin: 1.5rem 0;
+            margin: 1.5rem auto; /* Dibuat auto agar gambar rata tengah */
+            display: block;
         }
     </style>
 

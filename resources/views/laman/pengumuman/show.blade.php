@@ -163,15 +163,32 @@
     </div>
     </div>
 
-    {{-- CSS KHUSUS UNTUK FORMATTING ISI BERITA (Agar tag HTML seperti <b>, <i>, <ol> dari editor terbaca rapi) --}}
+    {{-- CSS KHUSUS UNTUK FORMATTING ISI ARTIKEL --}}
     <style>
+        /* 1. MEMAKSA BROWSER MEMBACA "ENTER" DAN "SPASI" SESUAI INPUTAN ADMIN */
+        .article-content {
+            white-space: pre-wrap !important;
+            word-wrap: break-word;
+            text-align: justify !important;
+        }
+
+        /* 2. MEMAKSA RATA KANAN-KIRI & MENGHAPUS STYLE BAWAAN COPY-PASTE (MS WORD) */
+        .article-content p,
+        .article-content div,
+        .article-content span,
+        .article-content ul,
+        .article-content ol,
+        .article-content li {
+            text-align: justify !important;
+        }
+
+        /* Memberikan jarak ideal antar paragraf */
         .article-content p {
             margin-bottom: 1.25rem;
         }
 
         .article-content a {
             color: #5e72e4;
-            /* argon-blue */
             text-decoration: underline;
         }
 
@@ -197,7 +214,9 @@
             max-width: 100%;
             height: auto;
             border-radius: 0.75rem;
-            margin: 1.5rem 0;
+            margin: 1.5rem auto;
+            /* Dibuat auto agar gambar rata tengah */
+            display: block;
         }
     </style>
 
