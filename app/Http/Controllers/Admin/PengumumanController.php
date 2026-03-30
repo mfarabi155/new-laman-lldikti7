@@ -84,36 +84,36 @@ class PengumumanController extends Controller
 
     // 3. Menyimpan Data Baru
     public function store(Request $request)
-    {
-        $request->validate([
-            'info_tanggal' => 'required|date',
-            'info_judul'   => 'required|string|max:625',
-            'info_isi'     => 'required',
-            // Validasi array lampiran
-            'judul_file.*' => 'nullable|string',
-            'link_file.*'  => 'nullable|string',
-        ]);
+        {
+            $request->validate([
+                'info_tanggal' => 'required|date',
+                'info_judul'   => 'required|string|max:625',
+                'info_isi'     => 'required',
+                // Validasi array lampiran
+                'judul_file.*' => 'nullable|string',
+                'link_file.*'  => 'nullable|string',
+            ]);
 
-        $infoId = Str::random(22); // Sesuai tipe data varchar(22) di database
-        dd(Auth::user()->t_bagian_id);
-        // Simpan Data Utama
-        Info::create([
-            'info_id'       => $infoId,
-            'id_info_jenis' => 0, // 0 = Pengumuman
-            't_bagian_id'   => Auth::user()->t_bagian_id ?? 1, // Jika admin punya bagian
-            'info_status'   => 0, // 0 = Unhide/Aktif
-            'info_judul'    => $request->info_judul,
-            'slug'          => Str::slug($request->info_judul . '-' . Str::random(5)),
-            'info_isi'      => $request->info_isi,
-            'info_tanggal'  => $request->info_tanggal,
-            'id_created'    => Auth::user()->t_user_id ?? 'System',
-        ]);
+            $infoId = Str::random(22); // Sesuai tipe data varchar(22) di database
+            
+            // Simpan Data Utama (Gunakan session, BUKAN Auth::user())
+            Info::create([
+                'info_id'       => $infoId,
+                'id_info_jenis' => 0, // 0 = Pengumuman
+                't_bagian_id'   => session('admin_bagian_id', 1), // Ambil dari session
+                'info_status'   => 0, // 0 = Unhide/Aktif
+                'info_judul'    => $request->info_judul,
+                'slug'          => Str::slug($request->info_judul . '-' . Str::random(5)),
+                'info_isi'      => $request->info_isi,
+                'info_tanggal'  => $request->info_tanggal,
+                'id_created'    => session('admin_id', 'System'), // Ambil dari session
+            ]);
 
-        // Simpan Lampiran Berkas (Jika ada)
-        $this->simpanLampiran($request, $infoId);
+            // Simpan Lampiran Berkas (Jika ada)
+            $this->simpanLampiran($request, $infoId);
 
-        return redirect('pangkalan/pengumuman')->with('success', 'Pengumuman berhasil ditambahkan!');
-    }
+            return redirect('pangkalan/pengumuman')->with('success', 'Pengumuman berhasil ditambahkan!');
+        }
 
     // 4. Menampilkan Form Edit
     public function edit($id)
@@ -125,29 +125,30 @@ class PengumumanController extends Controller
 
     // 5. Menyimpan Perubahan
     public function update(Request $request, $id)
-    {
-        $info = Info::findOrFail($id);
+        {
+            $info = Info::findOrFail($id);
 
-        $request->validate([
-            'info_tanggal' => 'required|date',
-            'info_judul'   => 'required|string|max:625',
-            'info_isi'     => 'required',
-        ]);
+            $request->validate([
+                'info_tanggal' => 'required|date',
+                'info_judul'   => 'required|string|max:625',
+                'info_isi'     => 'required',
+            ]);
 
-        $info->update([
-            'info_judul'   => $request->info_judul,
-            'slug'         => Str::slug($request->info_judul . '-' . Str::random(5)),
-            'info_isi'     => $request->info_isi,
-            'info_tanggal' => $request->info_tanggal,
-            'id_updated'   => Auth::user()->t_user_id ?? 'System',
-        ]);
+            // Gunakan session untuk id_updated
+            $info->update([
+                'info_judul'   => $request->info_judul,
+                'slug'         => Str::slug($request->info_judul . '-' . Str::random(5)),
+                'info_isi'     => $request->info_isi,
+                'info_tanggal' => $request->info_tanggal,
+                'id_updated'   => session('admin_id', 'System'), // Ambil dari session
+            ]);
 
-        // Hapus lampiran lama, dan insert yang baru (Cara paling bersih & simpel)
-        InfoDetail::where('t_info_id', $id)->delete();
-        $this->simpanLampiran($request, $id);
+            // Hapus lampiran lama, dan insert yang baru (Cara paling bersih & simpel)
+            InfoDetail::where('t_info_id', $id)->delete();
+            $this->simpanLampiran($request, $id);
 
-        return redirect()->route('admin.pengumuman.index')->with('success', 'Pengumuman berhasil diperbarui!');
-    }
+            return redirect()->route('admin.pengumuman.index')->with('success', 'Pengumuman berhasil diperbarui!');
+        }
 
     // 6. Mengubah Status (Hide/Unhide)
     public function disable($id)
